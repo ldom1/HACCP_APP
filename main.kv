@@ -3,6 +3,7 @@
 #:include kv/settings_screen.kv
 #:include kv/settings_collaborateurs_screen.kv
 #:include kv/settings_elements_refrigerants.kv
+#:include kv/settings_plan_nettoyage.kv
 #:import utils kivy.utils
 
 GridLayout:
@@ -71,3 +72,6 @@ GridLayout:
             SettingsElementsRefrigerantsScreen:
                 name: "settings_elements_refrigerants_screen"
                 id: settings_elements_refrigerants_screen
+            SettingsPlanNettoyageScreen:
+                name: "settings_plan_nettoyage_screen"
+                id: settings_plan_nettoyage_screen

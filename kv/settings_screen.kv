@@ -60,11 +60,10 @@
                     color: utils.get_color_from_hex("#0062D1")
                     markup: True
                     on_press:
-                        print('press')
                         self.text = "[b]Plan de nettoyage[/b]"
                     on_release:
-                        print('Plan de nettoyage')
                         self.text = "Plan de nettoyage"
+                        app.change_screen("settings_plan_nettoyage_screen", "left")
                 LabelButton:
                     id: btn_settings_fournisseurs
                     canvas:

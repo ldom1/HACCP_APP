@@ -61,8 +61,8 @@
                     on_press:
                         self.text = "[b]Plan de nettoyage[/b]"
                     on_release:
-                        print('Plan de nettoyage')
                         self.text = "Plan de nettoyage"
+                        app.change_screen("settings_plan_nettoyage_screen", "left")
                 LabelButton:
                     id: btn_settings_fournisseurs
                     canvas:
@@ -185,7 +185,7 @@
                         hint_text: "Nom"
                     GridLayout:
                         cols: 2
-                        pos_hint: {"top": .3, "left": 1}
+                        pos_hint: {"top": .1, "left": 1}
                         size_hint: 1, .1
                         spacing: 10, 10
                         padding: 0, 10

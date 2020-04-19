@@ -162,7 +162,6 @@ class CollaborateursBannerSettings(GridLayout):
     rows = 1
 
     def __init__(self, **kwargs):
-        app = App.get_running_app()
         super(CollaborateursBannerSettings, self).__init__()
 
         self.nom = kwargs.pop('prenom') + " " + kwargs.pop('nom')

@@ -148,7 +148,6 @@ class ElementRefrigerantBannerSettings(GridLayout):
     rows = 1
 
     def __init__(self, **kwargs):
-        app = App.get_running_app()
         super(ElementRefrigerantBannerSettings, self).__init__()
 
         self.nom = kwargs.pop('nom')

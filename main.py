@@ -31,6 +31,10 @@ class SettingsElementsRefrigerantsScreen(Screen):
     pass
 
 
+class SettingsPlanNettoyageScreen(Screen):
+    pass
+
+
 class ImageButton(ButtonBehavior, Image):
     pass
 
@@ -54,7 +58,6 @@ class MainApp(App):
         ManageElementRefrigerant().load_elements_refrigerants_settings()
 
     def change_screen(self, screen_name, direction):
-
         # Clean selected screen
         if screen_name == "temperature_frigo_screen":
             ManageTemperatureFridgeScreen().clear_temperature_fridge_screen()
@@ -62,8 +65,6 @@ class MainApp(App):
         screen_manager = self.root.ids['screen_manager']
         screen_manager.transition.direction = direction
         screen_manager.current = screen_name  # change current to the screen name I pass
-
-
 
 
 MainApp().run()
