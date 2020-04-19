@@ -1,0 +1,73 @@
+#:include kv/home_screen.kv
+#:include kv/temperature_frigo_screen.kv
+#:include kv/settings_screen.kv
+#:include kv/settings_collaborateurs_screen.kv
+#:include kv/settings_elements_refrigerants.kv
+#:import utils kivy.utils
+
+GridLayout:
+    cols: 1
+    FloatLayout:
+        GridLayout:
+            canvas:
+                Color:
+                    rgb: utils.get_color_from_hex("#0062D1")
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+            cols: 5
+            pos_hint: {"top": 1, "left": 1}
+            size_hint: 1, .15
+            spacing: 20, 20
+            padding: 20, 20
+            GridLayout:
+                cols: 1
+                size_hint: .5, .5
+                ImageButton:
+                    source: "icons/haccp_logo.png"
+                    on_release:
+                        app.change_screen('home_screen', direction='right')
+            GridLayout:
+                cols: 1
+            GridLayout:
+                cols: 1
+                Label:
+                    pos_hint: {"top": .95, "left": 1}
+                    size_hint: 1, 1
+                    text: "Stoma"
+                    color: utils.get_color_from_hex("#ffffff")
+            GridLayout:
+                cols: 1
+            GridLayout:
+                cols: 1
+                size_hint: .5, .5
+                spacing: 20, 20
+                ImageButton:
+                    source: "icons/settings.png"
+                    on_release:
+                        app.change_screen('settings_screen', direction='left')
+        ScreenManager:
+            size_hint: 1, 0.85
+            pos_hint: {"top": 0.85, "left": 1}
+            canvas:
+                Color:
+                    rgb: utils.get_color_from_hex("#ffffff")
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+            id: screen_manager
+            HomeScreen:
+                name: "home_screen"
+                id: home_screen
+            TemperatureFrigoScreen:
+                name: "temperature_frigo_screen"
+                id: temperature_frigo_screen
+            SettingsScreen:
+                name: "settings_screen"
+                id: settings_screen
+            SettingsCollaborateursScreen:
+                name: "settings_collaborateurs_screen"
+                id: settings_collaborateurs_screen
+            SettingsElementsRefrigerantsScreen:
+                name: "settings_elements_refrigerants_screen"
+                id: settings_elements_refrigerants_screen

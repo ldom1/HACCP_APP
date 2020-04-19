@@ -1,0 +1,124 @@
+#:import utils kivy.utils
+
+<HomeScreen>:
+    FloatLayout:
+        GridLayout:
+            cols: 4
+            pos_hint: {"top": 0.8, "left": 1}
+            size_hint: 1, .18
+            GridLayout:
+                cols: 1
+                spacing: 20, 20
+                ImageButton:
+                    source: "icons/list.png"
+                    pos_hint: {"top": 1, "left": 1}
+                    size_hint: 0.3, 0.5
+                    on_release:
+                        print("tâche a effectuer")
+                Label:
+                    pos_hint: {"top": 0.1, "left": 1}
+                    color: utils.get_color_from_hex("#000000")
+                    size_hint: 1, 0.1
+                    text: "Tâches à effectuer"
+            GridLayout:
+                cols: 1
+                spacing: 20, 20
+                ImageButton:
+                    source: "icons/fridge.png"
+                    pos_hint: {"top": 1, "left": 1}
+                    size_hint: 0.3, 0.5
+                    on_release:
+                        app.change_screen("temperature_frigo_screen", "left")
+                Label:
+                    pos_hint: {"top": 0.1, "left": 1}
+                    color: utils.get_color_from_hex("#000000")
+                    size_hint: 1, 0.1
+                    text: "Température frigo"
+            GridLayout:
+                cols: 1
+                spacing: 20, 20
+                ImageButton:
+                    source: "icons/wash.png"
+                    pos_hint: {"top": 1, "left": 1}
+                    size_hint: 0.3, 0.5
+                    on_release:
+                        print("plan de nettoyage")
+                Label:
+                    pos_hint: {"top": 0.1, "left": 1}
+                    color: utils.get_color_from_hex("#000000")
+                    size_hint: 1, 0.1
+                    text: "Plan de nettoyage"
+            GridLayout:
+                cols: 1
+                spacing: 20, 20
+                ImageButton:
+                    source: "icons/food.png"
+                    pos_hint: {"top": 1, "left": 1}
+                    size_hint: 0.3, 0.5
+                    on_release:
+                        print("température service")
+                Label:
+                    pos_hint: {"top": 0.1, "left": 1}
+                    color: utils.get_color_from_hex("#000000")
+                    size_hint: 1, 0.1
+                    text: "Température service"
+        GridLayout:
+            cols: 4
+            pos_hint: {"top": 0.4, "left": 1}
+            size_hint: 1, .18
+            GridLayout:
+                cols: 1
+                spacing: 20, 20
+                ImageButton:
+                    source: "icons/truck.png"
+                    pos_hint: {"top": 1, "left": 1}
+                    size_hint: 0.3, 0.5
+                    on_release:
+                        print("réception produit")
+                Label:
+                    pos_hint: {"top": 0.1, "left": 1}
+                    color: utils.get_color_from_hex("#000000")
+                    size_hint: 1, 0.1
+                    text: "Réception produits"
+            GridLayout:
+                cols: 1
+                spacing: 20, 20
+                ImageButton:
+                    source: "icons/barcode.png"
+                    pos_hint: {"top": 1, "left": 1}
+                    size_hint: 0.3, 0.5
+                    on_release:
+                        print("traçabilité")
+                Label:
+                    pos_hint: {"top": 0.1, "left": 1}
+                    color: utils.get_color_from_hex("#000000")
+                    size_hint: 1, 0.1
+                    text: "Traçabilité"
+            GridLayout:
+                cols: 1
+                spacing: 20, 20
+                ImageButton:
+                    source: "icons/electric-appliances.png"
+                    pos_hint: {"top": 1, "left": 1}
+                    size_hint: 0.3, 0.5
+                    on_release:
+                        print("friteuse")
+                Label:
+                    pos_hint: {"top": 0.1, "left": 1}
+                    color: utils.get_color_from_hex("#000000")
+                    size_hint: 1, 0.1
+                    text: "Friteuse"
+            GridLayout:
+                cols: 1
+                spacing: 20, 20
+                ImageButton:
+                    source: "icons/printer.png"
+                    pos_hint: {"top": 1, "left": 1}
+                    size_hint: 0.3, 0.5
+                    on_release:
+                        print("etiquettes")
+                Label:
+                    pos_hint: {"top": 0.1, "left": 1}
+                    color: utils.get_color_from_hex("#000000")
+                    size_hint: 1, 0.1
+                    text: "Etiquettes"

@@ -1,0 +1,129 @@
+#:import utils kivy.utils
+
+<SettingsScreen>:
+    FloatLayout:
+        GridLayout:
+            cols: 3
+            pos_hint: {"top": .99, "left": 1}
+            size_hint: 1, .98
+            padding: 10, 10
+            GridLayout:
+                pos_hint: {"top": 0.8, "left": 1}
+                size_hint: .2, .8
+                spacing: 10, 10
+                padding: 0, 10
+                cols: 1
+                LabelButton:
+                    id: btn_settings_collaborators
+                    canvas:
+                        Color:
+                            rgb: utils.get_color_from_hex("#0062D1")
+                        Line:
+                            width: 2
+                            rectangle: self.x, self.y, self.width, self.height
+                    text: "Collaborateurs"
+                    background_color: utils.get_color_from_hex("#000000")
+                    color: utils.get_color_from_hex("#0062D1")
+                    markup: True
+                    on_press:
+                        self.text = "[b]Collaborateurs[/b]"
+                    on_release:
+                        self.text = "Collaborateurs"
+                        app.change_screen("settings_collaborateurs_screen", "left")
+                LabelButton:
+                    id: btn_settings_elements_refrigerants
+                    canvas:
+                        Color:
+                            rgb: utils.get_color_from_hex("#0062D1")
+                        Line:
+                            width: 2
+                            rectangle: self.x, self.y, self.width, self.height
+                    text: "Éléments régrigérants"
+                    background_color: utils.get_color_from_hex("#000000")
+                    color: utils.get_color_from_hex("#0062D1")
+                    markup: True
+                    on_press:
+                        self.text = "[b]Éléments régrigérants[/b]"
+                    on_release:
+                        self.text = "Éléments régrigérants"
+                        app.change_screen("settings_elements_refrigerants_screen", "left")
+                LabelButton:
+                    id: btn_settings_plan_nettoyage
+                    canvas:
+                        Color:
+                            rgb: utils.get_color_from_hex("#0062D1")
+                        Line:
+                            width: 2
+                            rectangle: self.x, self.y, self.width, self.height
+                    text: "Plan de nettoyage"
+                    background_color: utils.get_color_from_hex("#000000")
+                    color: utils.get_color_from_hex("#0062D1")
+                    markup: True
+                    on_press:
+                        print('press')
+                        self.text = "[b]Plan de nettoyage[/b]"
+                    on_release:
+                        print('Plan de nettoyage')
+                        self.text = "Plan de nettoyage"
+                LabelButton:
+                    id: btn_settings_fournisseurs
+                    canvas:
+                        Color:
+                            rgb: utils.get_color_from_hex("#0062D1")
+                        Line:
+                            width: 2
+                            rectangle: self.x, self.y, self.width, self.height
+                    text: "Fournisseurs"
+                    background_color: utils.get_color_from_hex("#000000")
+                    color: utils.get_color_from_hex("#0062D1")
+                    markup: True
+                    on_press:
+                        print('press')
+                        self.text = "[b]Fournisseurs[/b]"
+                    on_release:
+                        print('Fournisseurs')
+                        self.text = "Fournisseurs"
+                LabelButton:
+                    id: btn_settings_friteuses
+                    canvas:
+                        Color:
+                            rgb: utils.get_color_from_hex("#0062D1")
+                        Line:
+                            width: 2
+                            rectangle: self.x, self.y, self.width, self.height
+                    text: "Friteuses"
+                    background_color: utils.get_color_from_hex("#000000")
+                    color: utils.get_color_from_hex("#0062D1")
+                    markup: True
+                    on_press:
+                        print('press')
+                        self.text = "[b]Friteuses[/b]"
+                    on_release:
+                        print('Friteuses')
+                        self.text = "Friteuses"
+                LabelButton:
+                    id: btn_settings_etiquettes
+                    canvas:
+                        Color:
+                            rgb: utils.get_color_from_hex("#0062D1")
+                        Line:
+                            width: 2
+                            rectangle: self.x, self.y, self.width, self.height
+                    text: "Étiquettes"
+                    background_color: utils.get_color_from_hex("#000000")
+                    color: utils.get_color_from_hex("#0062D1")
+                    markup: True
+                    on_press:
+                        print('press')
+                        self.text = "[b]Étiquettes[/b]"
+                    on_release:
+                        print('Étiquettes')
+                        self.text = "Étiquettes"
+            GridLayout:
+                pos_hint: {"top": 0.8, "left": 1}
+                size_hint: .4, .8
+                cols: 1
+            GridLayout:
+                pos_hint: {"top": 0.8, "left": 1}
+                size_hint: .4, .8
+                cols: 1
