@@ -6,10 +6,11 @@ from kivy.uix.button import ButtonBehavior
 from kivy.uix.image import Image
 from kivy import utils
 
-from HaccpApp.haccpApp.src.pyScripts.categories import ManageCategories
-from HaccpApp.haccpApp.src.pyScripts.collaborateurs import ManageCollaborateurs
-from HaccpApp.haccpApp.src.pyScripts.elements_refrigerants import ManageElementRefrigerant
-from HaccpApp.haccpApp.src.pyScripts.fournisseurs import ManageFournisseurs
+from HaccpApp.haccpApp.src.pyScripts.categorie import ManageCategories
+from HaccpApp.haccpApp.src.pyScripts.collaborateur import ManageCollaborateurs
+from HaccpApp.haccpApp.src.pyScripts.element_refrigerant import ManageElementRefrigerant
+from HaccpApp.haccpApp.src.pyScripts.etiquette import ManageEtiquette
+from HaccpApp.haccpApp.src.pyScripts.fournisseur import ManageFournisseurs
 from HaccpApp.haccpApp.src.pyScripts.friteuse import ManageFriteuse
 from HaccpApp.haccpApp.src.pyScripts.lieu import ManageLieu
 from HaccpApp.haccpApp.src.pyScripts.plan_nettoyage import ManagePlanNettoyage
@@ -48,6 +49,10 @@ class SettingsFriteuseScreen(Screen):
     pass
 
 
+class SettingsEtiquettesScreen(Screen):
+    pass
+
+
 class ImageButton(ButtonBehavior, Image):
     pass
 
@@ -64,26 +69,29 @@ class MainApp(App):
         return GUI
 
     def on_start(self):
-        ManageCollaborateurs().load_collaborateurs()
-        ManageCollaborateurs().load_collaborateurs_settings()
+        ManageCollaborateurs().load_operations()
+        ManageCollaborateurs().load_settings()
 
-        ManageElementRefrigerant().load_elements_refrigerants()
-        ManageElementRefrigerant().load_elements_refrigerants_settings()
+        ManageElementRefrigerant().load_operations()
+        ManageElementRefrigerant().load_settings()
 
         # ManageLieu().load_()
-        ManageLieu().load_lieu_settings()
+        ManageLieu().load_settings()
 
         # ManagePlanNettoyage().load_()
-        ManagePlanNettoyage().load_plan_nettoyage_settings()
+        ManagePlanNettoyage().load_settings()
 
         # ManageFournisseurs().load_()
-        ManageFournisseurs().load_fournisseur_settings()
+        ManageFournisseurs().load_settings()
 
         # ManageCategories().load_()
-        ManageCategories().load_fournisseur_settings()
+        ManageCategories().load_settings()
 
         # ManageFriteuse().load_()
-        ManageFriteuse().load_friteuse_settings()
+        ManageFriteuse().load_settings()
+
+        # ManageEtiquette().load_()
+        ManageEtiquette().load_settings()
 
     def change_screen(self, screen_name, direction):
         # Clean selected screen

@@ -44,16 +44,16 @@ class ManagePlanNettoyage:
 
         self.query_firebase_add_data(nom=nom)
         self.settings_data['settings_plan_nettoyage_nom'].text = ""
-        self.load_plan_nettoyage_settings()
-        self.load_plan_nettoyage()
+        self.load_settings()
+        self.load_operations()
 
     def delete_data(self, *args):
         id = args[0]
         self.query_firebase_delete_data(id)
-        self.load_plan_nettoyage_settings()
-        self.load_plan_nettoyage()
+        self.load_settings()
+        self.load_operations()
 
-    def load_plan_nettoyage_settings(self):
+    def load_settings(self):
         self.settings_data["settings_plan_nettoyage_screen_banner"].clear_widgets()
         try:
             response_list = self.query_firebase_get_data()
@@ -66,7 +66,7 @@ class ManagePlanNettoyage:
         except Exception as e:
             print('Settings Plan nettoyage banner:', e)
 
-    def load_plan_nettoyage(self):
+    def load_operations(self):
         print('to do')
 
     def query_firebase_get_data(self):

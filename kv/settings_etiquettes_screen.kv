@@ -1,8 +1,7 @@
 #:import utils kivy.utils
-#:import ManageFournisseurs HaccpApp.haccpApp.src.pyScripts.fournisseur.ManageFournisseurs
-#:import ManageCategories HaccpApp.haccpApp.src.pyScripts.categorie.ManageCategories
+#:import ManageEtiquette HaccpApp.haccpApp.src.pyScripts.etiquette.ManageEtiquette
 
-<SettingsFournisseursScreen>:
+<SettingsEtiquettesScreen>:
     FloatLayout:
         GridLayout:
             cols: 3
@@ -68,19 +67,21 @@
                         app.change_screen("settings_plan_nettoyage_screen", "left")
                 LabelButton:
                     id: btn_settings_fournisseurs
-                    canvas.before:
+                    canvas:
                         Color:
                             rgb: utils.get_color_from_hex("#0062D1")
-                        Rectangle:
-                            size: self.size
-                            pos: self.pos
+                        Line:
+                            width: 2
+                            rectangle: self.x, self.y, self.width, self.height
                     text: "Fournisseurs"
-                    color: utils.get_color_from_hex("#ffffff")
+                    background_color: utils.get_color_from_hex("#000000")
+                    color: utils.get_color_from_hex("#0062D1")
                     markup: True
                     on_press:
                         self.text = "[b]Fournisseurs[/b]"
                     on_release:
                         self.text = "Fournisseurs"
+                        app.change_screen("settings_fournisseurs_screen", "left")
                 LabelButton:
                     id: btn_settings_friteuses
                     canvas:
@@ -100,21 +101,21 @@
                         app.change_screen("settings_friteuse_screen", "left")
                 LabelButton:
                     id: btn_settings_etiquettes
-                    canvas:
+                    canvas.before:
                         Color:
                             rgb: utils.get_color_from_hex("#0062D1")
-                        Line:
-                            width: 2
-                            rectangle: self.x, self.y, self.width, self.height
+                        Rectangle:
+                            size: self.size
+                            pos: self.pos
                     text: "Étiquettes"
-                    background_color: utils.get_color_from_hex("#000000")
-                    color: utils.get_color_from_hex("#0062D1")
+                    color: utils.get_color_from_hex("#ffffff")
                     markup: True
                     on_press:
+                        print('press')
                         self.text = "[b]Étiquettes[/b]"
                     on_release:
+                        print('Étiquettes')
                         self.text = "Étiquettes"
-                        app.change_screen("settings_etiquettes_screen", "left")
             GridLayout:
                 pos_hint: {"top": 0.8, "left": 1}
                 size_hint: .33, .8
@@ -132,15 +133,15 @@
                             Line:
                                 width: 2
                                 rectangle: self.x, self.y, self.width, self.height
-                        text: "Mes fournisseurs"
+                        text: "Mes étiquettes"
                         background_color: utils.get_color_from_hex("#000000")
                         color: utils.get_color_from_hex("#0062D1")
                 ScrollView:
                     pos_hint: {"top": .8, "left": 1}
-                    size_hint: 1, .5
+                    size_hint: 1, .7
                     GridLayout:
                         # Banner grid
-                        id: settings_fournisseurs_banner
+                        id: settings_etiquette_screen_banner
                         cols: 1
                         spacing: 5, 5
                         padding: 20, 20
@@ -149,46 +150,6 @@
                         width: self.minimum_width
                         row_default_height: '60dp'
                         row_force_default: True
-                GridLayout:
-                    cols: 1
-                    pos_hint: {"top": .3, "left": 1}
-                    size_hint: 1, .1
-                    TextInput:
-                        pos_hint: {"top": .65, "left": 1}
-                        size_hint: .1, .1
-                        id: settings_fournisseurs_nom
-                        hint_text: "Nom"
-
-                GridLayout:
-                    cols: 2
-                    pos_hint: {"top": .2, "left": 1}
-                    size_hint: 1, .1
-                    spacing: 10, 10
-                    padding: 0, 10
-                    LabelButton:
-                        canvas.before:
-                            Color:
-                                rgb: utils.get_color_from_hex("#C04A4A") if self.state == 'normal' else utils.get_color_from_hex("#C00000")
-                            Rectangle:
-                                size: self.size
-                                pos: self.pos
-                        text: "[u]Annuler[/u]"
-                        markup: True
-                        on_release:
-                            app.change_screen("settings_screen", direction="right")
-                    LabelButton:
-                        canvas.before:
-                            Color:
-                                rgb: utils.get_color_from_hex("#3CAE70") if self.state == 'normal' else utils.get_color_from_hex("#00B050")
-                            Rectangle:
-                                size: self.size
-                                pos: self.pos
-                        text: "[u]Valider[/u]"
-                        markup: True
-                        on_release:
-                            ManageFournisseurs().get_data_settings()
-
-
             GridLayout:
                 pos_hint: {"top": 0.8, "left": 1}
                 size_hint: .33, .8
@@ -206,58 +167,46 @@
                             Line:
                                 width: 2
                                 rectangle: self.x, self.y, self.width, self.height
-                        text: "Mes catégories"
+                        text: "Ajouter une étiquette"
                         background_color: utils.get_color_from_hex("#000000")
                         color: utils.get_color_from_hex("#0062D1")
-                ScrollView:
-                    pos_hint: {"top": .8, "left": 1}
-                    size_hint: 1, .5
-                    GridLayout:
-                        # Banner grid
-                        id: settings_categorie_banner
-                        cols: 1
-                        spacing: 5, 5
-                        padding: 20, 20
-                        size_hint_y: None
-                        height: self.minimum_height
-                        width: self.minimum_width
-                        row_default_height: '60dp'
-                        row_force_default: True
-                GridLayout:
-                    cols: 1
-                    pos_hint: {"top": .3, "left": 1}
-                    size_hint: 1, .1
-                    TextInput:
-                        pos_hint: {"top": .65, "left": 1}
-                        size_hint: .1, .1
-                        id: settings_categorie_nom
-                        hint_text: "Nom"
 
                 GridLayout:
-                    cols: 2
-                    pos_hint: {"top": .2, "left": 1}
-                    size_hint: 1, .1
+                    cols: 1
+                    pos_hint: {"top": 0.8, "left": 1}
+                    size_hint: 1, .7
                     spacing: 10, 10
                     padding: 0, 10
-                    LabelButton:
-                        canvas.before:
-                            Color:
-                                rgb: utils.get_color_from_hex("#C04A4A") if self.state == 'normal' else utils.get_color_from_hex("#C00000")
-                            Rectangle:
-                                size: self.size
-                                pos: self.pos
-                        text: "[u]Annuler[/u]"
-                        markup: True
-                        on_release:
-                            app.change_screen("settings_screen", direction="right")
-                    LabelButton:
-                        canvas.before:
-                            Color:
-                                rgb: utils.get_color_from_hex("#3CAE70") if self.state == 'normal' else utils.get_color_from_hex("#00B050")
-                            Rectangle:
-                                size: self.size
-                                pos: self.pos
-                        text: "[u]Valider[/u]"
-                        markup: True
-                        on_release:
-                            ManageCategories().get_data_settings()
+                    TextInput:
+                        pos_hint: {"top": .75, "left": 1}
+                        size_hint: .1, .1
+                        id: settings_etiquette_nom
+                        hint_text: "Nom"
+                    GridLayout:
+                        cols: 2
+                        pos_hint: {"top": .1, "left": 1}
+                        size_hint: 1, .1
+                        spacing: 10, 10
+                        padding: 0, 10
+                        LabelButton:
+                            canvas.before:
+                                Color:
+                                    rgb: utils.get_color_from_hex("#C04A4A") if self.state == 'normal' else utils.get_color_from_hex("#C00000")
+                                Rectangle:
+                                    size: self.size
+                                    pos: self.pos
+                            text: "[u]Annuler[/u]"
+                            markup: True
+                            on_release:
+                                app.change_screen("settings_screen", direction="right")
+                        LabelButton:
+                            canvas.before:
+                                Color:
+                                    rgb: utils.get_color_from_hex("#3CAE70") if self.state == 'normal' else utils.get_color_from_hex("#00B050")
+                                Rectangle:
+                                    size: self.size
+                                    pos: self.pos
+                            text: "[u]Valider[/u]"
+                            markup: True
+                            on_release:
+                                ManageEtiquette().get_data_settings()

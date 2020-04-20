@@ -24,93 +24,66 @@ class ImageButton(ButtonBehavior, Image):
     pass
 
 
-class ManageCollaborateurs:
+class ManageFournisseurs:
 
     def __init__(self):
         self.app = App.get_running_app()
-        self.settings = self.app.root.ids["settings_collaborateurs_screen"]
+        self.settings = self.app.root.ids["settings_fournisseurs_screen"]
         self.settings_data = self.settings.ids
-        self.base_url = "https://haccpapp-40c63.firebaseio.com/test_user/settings/collaborateurs"
+        self.base_url = "https://haccpapp-40c63.firebaseio.com/test_user/settings/fournisseur"
 
     def get_data_settings(self):
-        nom = self.settings_data['settings_collaborateurs_nom'].text
-        prenom = self.settings_data['settings_collaborateurs_prenom'].text
+        nom = self.settings_data['settings_fournisseurs_nom'].text
 
         if nom == "":
-            self.settings_data['settings_collaborateurs_nom'].background_color = utils.get_color_from_hex(
-                "#C04A4A")
+            self.settings_data['settings_fournisseurs_nom'].background_color = utils.get_color_from_hex("#C04A4A")
             return
         else:
-            self.settings_data['settings_collaborateurs_nom'].background_color = [1, 1, 1, 1]
+            self.settings_data['settings_fournisseurs_nom'].background_color = [1, 1, 1, 1]
 
-        if prenom == "":
-            self.settings_data[
-                'settings_collaborateurs_prenom'].background_color = utils.get_color_from_hex("#C04A4A")
-            return
-        else:
-            self.settings_data['settings_collaborateurs_prenom'].background_color = [1, 1, 1, 1]
-
-        self.query_firebase_add_data(nom=nom, prenom=prenom)
-        self.settings_data['settings_collaborateurs_nom'].text = ""
-        self.settings_data['settings_collaborateurs_prenom'].text = ""
-        self.load_collaborateurs_settings()
-        self.load_collaborateurs()
+        self.query_firebase_add_data(nom=nom)
+        self.settings_data['settings_fournisseurs_nom'].text = ""
+        self.load_settings()
+        self.load_operations()
 
     def delete_data(self, *args):
         id = args[0]
         self.query_firebase_delete_data(id)
-        self.load_collaborateurs_settings()
-        self.load_collaborateurs()
+        self.load_settings()
+        self.load_operations()
 
-    def load_collaborateurs_settings(self):
-        self.settings_data["settings_collaborateurs_screen_banner"].clear_widgets()
+    def load_settings(self):
+        self.settings_data["settings_fournisseurs_banner"].clear_widgets()
         try:
             response_list = self.query_firebase_get_data()
             for response in response_list:
-                settings_collaborateur_banner = CollaborateursBannerSettings(prenom=response['prenom'],
-                                                                             nom=response['nom'],
-                                                                             id=response['id'])
-                self.settings_data["settings_collaborateurs_screen_banner"].add_widget(settings_collaborateur_banner)
+                settings_banner = FournisseurBannerSettings(nom=response['nom'], id=response['id'])
+                self.settings_data["settings_fournisseurs_banner"].add_widget(settings_banner)
         except Exception as e:
-            print('Settings collaborateurs banner:', e)
+            print('Settings fournisseurs banner:', e)
 
-    def load_collaborateurs(self):
-        self.app.root.ids["temperature_frigo_screen"].ids["temp_frigo_selection_collaborateur_grid"].clear_widgets()
-        # Temp Frigo
-        try:
-            response_list = self.query_firebase_get_data()
-        except Exception as e:
-            print(e)
-            return
-        for response in response_list:
-            try:
-                collaborateur_banner = CollaborateursBanner(prenom=response['prenom'],
-                                                            nom=response['nom'])
-                self.app.root.ids["temperature_frigo_screen"].ids["temp_frigo_selection_collaborateur_grid"].add_widget(
-                    collaborateur_banner)
-            except Exception as e:
-                print('Collaborateurs Temp Frigo banner:', e)
+    def load_operations(self):
+        print('to do')
 
     def query_firebase_get_data(self):
         url = self.base_url + ".json"
         response = requests.get(url=url)
-        collaborateur_json = json.loads(response.content.decode())
+        response_json = json.loads(response.content.decode())
 
-        collaborateur_list = []
+        response_list = []
 
-        for k, v in collaborateur_json.items():
-            collaborateur_list.append({'nom': v['nom'], 'prenom': v['prenom'], 'id': k})
+        for k, v in response_json.items():
+            response_list.append({'nom': v['nom'], 'id': k})
 
-        return collaborateur_list
+        return response_list
 
     def query_firebase_delete_data(self, id):
         url = self.base_url + "/{0}.json".format(id)
         response = requests.delete(url=url)
         return json.dumps(response.content.decode())
 
-    def query_firebase_add_data(self, nom, prenom):
+    def query_firebase_add_data(self, nom):
         data = {'date': datetime.datetime.today().strftime("%d/%m/%Y %H:%M"),
-                'prenom': format_text(prenom),
                 'nom': format_text(nom), 'id': str(uuid.uuid4())}
 
         url = self.base_url + ".json"
@@ -118,15 +91,15 @@ class ManageCollaborateurs:
         requests.post(url, data=json.dumps(data))
 
 
-class CollaborateursBanner(GridLayout):
+class FournisseurBanner(GridLayout):
     rows = 1
 
     def __init__(self, **kwargs):
-        super(CollaborateursBanner, self).__init__()
+        super(FournisseurBanner, self).__init__()
 
         self.app = App.get_running_app()
 
-        self.nom = kwargs.pop('prenom') + " " + kwargs.pop('nom')
+        self.nom = kwargs.pop('nom')
 
         with self.canvas.before:
             Color(rgba=(utils.get_color_from_hex("#0062D1")))
@@ -156,13 +129,13 @@ class CollaborateursBanner(GridLayout):
         running_app.collaborateur_choice = widget.text
 
 
-class CollaborateursBannerSettings(GridLayout):
+class FournisseurBannerSettings(GridLayout):
     rows = 1
 
     def __init__(self, **kwargs):
-        super(CollaborateursBannerSettings, self).__init__()
+        super(FournisseurBannerSettings, self).__init__()
 
-        self.nom = kwargs.pop('prenom') + " " + kwargs.pop('nom')
+        self.nom = kwargs.pop('nom')
         self.id = kwargs.pop('id')
 
         with self.canvas.before:
@@ -180,7 +153,7 @@ class CollaborateursBannerSettings(GridLayout):
         # right floatlayout - Bouton delete
         right_fl = FloatLayout()
         right_fl_delete = ImageButton(source="icons/delete.png", size_hint=(.4, .4), pos_hint={"top": .7, "right": 1},
-                                      on_release=partial(ManageCollaborateurs().delete_data, self.id))
+                                      on_release=partial(ManageFournisseurs().delete_data, self.id))
         right_fl.add_widget(right_fl_delete)
 
         self.add_widget(left_fl)

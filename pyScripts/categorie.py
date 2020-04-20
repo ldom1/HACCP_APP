@@ -24,46 +24,43 @@ class ImageButton(ButtonBehavior, Image):
     pass
 
 
-class ManageLieu:
+class ManageCategories:
 
     def __init__(self):
         self.app = App.get_running_app()
-        self.settings_plan_net_lieu = self.app.root.ids["settings_plan_nettoyage_screen"]
-        self.settings_plan_net_lieu_data = self.settings_plan_net_lieu.ids
-        self.base_url = "https://haccpapp-40c63.firebaseio.com/test_user/settings/plan_nettoyage_lieu"
+        self.settings = self.app.root.ids["settings_fournisseurs_screen"]
+        self.settings_data = self.settings.ids
+        self.base_url = "https://haccpapp-40c63.firebaseio.com/test_user/settings/categorie"
 
     def get_data_settings(self):
-        nom = self.settings_plan_net_lieu_data['settings_lieu_nom'].text
+        nom = self.settings_data['settings_categorie_nom'].text
 
         if nom == "":
-            self.settings_plan_net_lieu_data[
-                'settings_lieu_nom'].background_color = utils.get_color_from_hex(
-                "#C04A4A")
+            self.settings_data['settings_categorie_nom'].background_color = utils.get_color_from_hex("#C04A4A")
             return
         else:
-            self.settings_plan_net_lieu_data['settings_lieu_nom'].background_color = [1, 1, 1, 1]
+            self.settings_data['settings_categorie_nom'].background_color = [1, 1, 1, 1]
 
         self.query_firebase_add_data(nom=nom)
-        self.settings_plan_net_lieu_data['settings_lieu_nom'].text = ""
+        self.settings_data['settings_categorie_nom'].text = ""
         self.load_settings()
         self.load_operations()
 
     def delete_data(self, *args):
-        plan_nettoyage_lieu_id = args[0]
-        self.query_firebase_delete_data(plan_nettoyage_lieu_id)
+        id = args[0]
+        self.query_firebase_delete_data(id)
         self.load_settings()
         self.load_operations()
 
     def load_settings(self):
-        self.settings_plan_net_lieu_data["settings_lieu_screen_banner"].clear_widgets()
+        self.settings_data["settings_categorie_banner"].clear_widgets()
         try:
             response_list = self.query_firebase_get_data()
             for response in response_list:
-                settings_lieu_banner = LieuBannerSettings(nom=response['nom'], id=response['id'])
-                self.settings_plan_net_lieu_data["settings_lieu_screen_banner"].add_widget(
-                    settings_lieu_banner)
+                settings_banner = CategorieBannerSettings(nom=response['nom'], id=response['id'])
+                self.settings_data["settings_categorie_banner"].add_widget(settings_banner)
         except Exception as e:
-            print('Settings Lieu banner:', e)
+            print('Settings categories banner:', e)
 
     def load_operations(self):
         print('to do')
@@ -94,15 +91,15 @@ class ManageLieu:
         requests.post(url, data=json.dumps(data))
 
 
-class LieuBanner(GridLayout):
+class CategorieBanner(GridLayout):
     rows = 1
 
     def __init__(self, **kwargs):
-        super(LieuBanner, self).__init__()
+        super(CategorieBanner, self).__init__()
 
         self.app = App.get_running_app()
 
-        self.nom = kwargs.pop('prenom') + " " + kwargs.pop('nom')
+        self.nom = kwargs.pop('nom')
 
         with self.canvas.before:
             Color(rgba=(utils.get_color_from_hex("#0062D1")))
@@ -132,11 +129,11 @@ class LieuBanner(GridLayout):
         running_app.collaborateur_choice = widget.text
 
 
-class LieuBannerSettings(GridLayout):
+class CategorieBannerSettings(GridLayout):
     rows = 1
 
     def __init__(self, **kwargs):
-        super(LieuBannerSettings, self).__init__()
+        super(CategorieBannerSettings, self).__init__()
 
         self.nom = kwargs.pop('nom')
         self.id = kwargs.pop('id')
@@ -156,7 +153,7 @@ class LieuBannerSettings(GridLayout):
         # right floatlayout - Bouton delete
         right_fl = FloatLayout()
         right_fl_delete = ImageButton(source="icons/delete.png", size_hint=(.4, .4), pos_hint={"top": .7, "right": 1},
-                                      on_release=partial(ManageLieu().delete_data, self.id))
+                                      on_release=partial(ManageCategories().delete_data, self.id))
         right_fl.add_widget(right_fl_delete)
 
         self.add_widget(left_fl)

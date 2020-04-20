@@ -30,9 +30,9 @@ class ManageFriteuse:
         self.app = App.get_running_app()
         self.settings_banner = self.app.root.ids['settings_friteuse_screen']
         self.settings_data = self.settings_banner.ids
-        self.base_url = "https://haccpapp-40c63.firebaseio.com/test_user/settings/friteuses"
+        self.base_url = "https://haccpapp-40c63.firebaseio.com/test_user/settings/friteuse"
 
-    def load_friteuse_settings(self):
+    def load_settings(self):
         self.settings_data["settings_friteuse_screen_banner"].clear_widgets()
         try:
             response_list = self.query_firebase_get_data()
@@ -44,7 +44,7 @@ class ManageFriteuse:
         except Exception as e:
             print('Settings friteuse banner:', e)
 
-    def load_friteuse(self):
+    def load_operations(self):
         self.app.root.ids["temperature_frigo_screen"].ids["temp_frigo_selection_element_grid"].clear_widgets()
         # Temp Frigo
         try:
@@ -72,14 +72,14 @@ class ManageFriteuse:
 
         self.query_firebase_add_data(nom_element)
         self.settings_data['settings_friteuse_nom'].text = ""
-        self.load_friteuse_settings()
-        self.load_friteuse()
+        self.load_settings()
+        self.load_operations()
 
     def delete_data(self, *args):
         id = args[0]
         self.query_firebase_delete_data(id)
-        self.load_friteuse_settings()
-        self.load_friteuse()
+        self.load_settings()
+        self.load_operations()
 
     def query_firebase_add_data(self, nom):
         data = {'date': datetime.datetime.today().strftime("%d/%m/%Y %H:%M"),

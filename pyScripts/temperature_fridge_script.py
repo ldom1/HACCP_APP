@@ -25,6 +25,8 @@ class ManageTemperatureFridgeScreen:
             temp_new = temp_old + 0.1
         elif action == 'sub':
             temp_new = temp_old - 0.1
+        else:
+            temp_new = temp_old
         self.temperature_fridge_data['label_temp_fridge'].text = str(round(temp_new, 2)) + " °C"
 
     def get_data_temperature_fridge_on_click(self):

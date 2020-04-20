@@ -1,5 +1,5 @@
 #:import utils kivy.utils
-#:import ManageElementRefrigerant HaccpApp.haccpApp.src.pyScripts.elements_refrigerants.ManageElementRefrigerant
+#:import ManageElementRefrigerant HaccpApp.haccpApp.src.pyScripts.element_refrigerant.ManageElementRefrigerant
 
 <SettingsElementsRefrigerantsScreen>:
     FloatLayout:
@@ -110,11 +110,10 @@
                     color: utils.get_color_from_hex("#0062D1")
                     markup: True
                     on_press:
-                        print('press')
                         self.text = "[b]Étiquettes[/b]"
                     on_release:
-                        print('Étiquettes')
                         self.text = "Étiquettes"
+                        app.change_screen("settings_etiquettes_screen", "left")
             GridLayout:
                 pos_hint: {"top": 0.8, "left": 1}
                 size_hint: .33, .8
