@@ -6,9 +6,12 @@ from kivy.uix.button import ButtonBehavior
 from kivy.uix.image import Image
 from kivy import utils
 
+from HaccpApp.haccpApp.src.pyScripts.categories import ManageCategories
 from HaccpApp.haccpApp.src.pyScripts.collaborateurs import ManageCollaborateurs
 from HaccpApp.haccpApp.src.pyScripts.elements_refrigerants import ManageElementRefrigerant
-from HaccpApp.haccpApp.src.pyScripts.plan_nettoyage import ManagePlanNettoyageElement, ManagePlanNettoyageLieu
+from HaccpApp.haccpApp.src.pyScripts.fournisseurs import ManageFournisseurs
+from HaccpApp.haccpApp.src.pyScripts.lieu import ManageLieu
+from HaccpApp.haccpApp.src.pyScripts.plan_nettoyage import ManagePlanNettoyage
 from HaccpApp.haccpApp.src.pyScripts.temperature_fridge_script import ManageTemperatureFridgeScreen
 
 
@@ -36,6 +39,10 @@ class SettingsPlanNettoyageScreen(Screen):
     pass
 
 
+class SettingsFournisseursScreen(Screen):
+    pass
+
+
 class ImageButton(ButtonBehavior, Image):
     pass
 
@@ -58,11 +65,17 @@ class MainApp(App):
         ManageElementRefrigerant().load_elements_refrigerants()
         ManageElementRefrigerant().load_elements_refrigerants_settings()
 
-        # ManagePlanNettoyageLieu().load_()
-        ManagePlanNettoyageLieu().load_plan_nettoyage_lieu_settings()
+        # ManageLieu().load_()
+        ManageLieu().load_lieu_settings()
 
-        # ManagePlanNettoyageElement().load_()
-        ManagePlanNettoyageElement().load_plan_nettoyage_element_settings()
+        # ManagePlanNettoyage().load_()
+        ManagePlanNettoyage().load_plan_nettoyage_settings()
+
+        # ManageFournisseurs().load_()
+        ManageFournisseurs().load_fournisseur_settings()
+
+        # ManageCategories().load_()
+        ManageCategories().load_fournisseur_settings()
 
     def change_screen(self, screen_name, direction):
         # Clean selected screen

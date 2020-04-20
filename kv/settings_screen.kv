@@ -77,11 +77,10 @@
                     color: utils.get_color_from_hex("#0062D1")
                     markup: True
                     on_press:
-                        print('press')
                         self.text = "[b]Fournisseurs[/b]"
                     on_release:
-                        print('Fournisseurs')
                         self.text = "Fournisseurs"
+                        app.change_screen("settings_fournisseurs_screen", "left")
                 LabelButton:
                     id: btn_settings_friteuses
                     canvas:

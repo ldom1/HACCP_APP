@@ -24,49 +24,45 @@ class ImageButton(ButtonBehavior, Image):
     pass
 
 
-class ManagePlanNettoyage:
+class ManageCategories:
 
     def __init__(self):
         self.app = App.get_running_app()
-        self.settings = self.app.root.ids["settings_plan_nettoyage_screen"]
+        self.settings = self.app.root.ids["settings_fournisseurs_screen"]
         self.settings_data = self.settings.ids
-        self.base_url = "https://haccpapp-40c63.firebaseio.com/test_user/settings/plan_nettoyage_element"
+        self.base_url = "https://haccpapp-40c63.firebaseio.com/test_user/settings/categories"
 
     def get_data_settings(self):
-        nom = self.settings_data['settings_plan_nettoyage_element_nom'].text
+        nom = self.settings_data['settings_categorie_nom'].text
 
         if nom == "":
-            self.settings_data['settings_plan_nettoyage_element_nom'].background_color = utils.get_color_from_hex(
-                "#C04A4A")
+            self.settings_data['settings_categorie_nom'].background_color = utils.get_color_from_hex("#C04A4A")
             return
         else:
-            self.settings_data['settings_plan_nettoyage_element_nom'].background_color = [1, 1, 1, 1]
+            self.settings_data['settings_categorie_nom'].background_color = [1, 1, 1, 1]
 
         self.query_firebase_add_data(nom=nom)
-        self.settings_data['settings_plan_nettoyage_element_nom'].text = ""
-        self.load_plan_nettoyage_settings()
-        self.load_plan_nettoyage()
+        self.settings_data['settings_categorie_nom'].text = ""
+        self.load_fournisseur_settings()
+        self.load_fournisseur()
 
     def delete_data(self, *args):
         id = args[0]
         self.query_firebase_delete_data(id)
-        self.load_plan_nettoyage_settings()
-        self.load_plan_nettoyage()
+        self.load_fournisseur_settings()
+        self.load_fournisseur()
 
-    def load_plan_nettoyage_settings(self):
-        self.settings_data["settings_plan_nettoyage_element_screen_banner"].clear_widgets()
+    def load_fournisseur_settings(self):
+        self.settings_data["settings_categorie_banner"].clear_widgets()
         try:
             response_list = self.query_firebase_get_data()
             for response in response_list:
-                settings_plan_nettoyage_element_banner = PlanNettoyageBannerSettings(
-                    nom=response['nom'],
-                    id=response['id'])
-                self.settings_data["settings_plan_nettoyage_element_screen_banner"].add_widget(
-                    settings_plan_nettoyage_element_banner)
+                settings_banner = CategorieBannerSettings(nom=response['nom'], id=response['id'])
+                self.settings_data["settings_categorie_banner"].add_widget(settings_banner)
         except Exception as e:
-            print('Settings Plan nettoyage element banner:', e)
+            print('Settings categories banner:', e)
 
-    def load_plan_nettoyage(self):
+    def load_fournisseur(self):
         print('to do')
 
     def query_firebase_get_data(self):
@@ -95,11 +91,11 @@ class ManagePlanNettoyage:
         requests.post(url, data=json.dumps(data))
 
 
-class PlanNettoyageBanner(GridLayout):
+class CategorieBanner(GridLayout):
     rows = 1
 
     def __init__(self, **kwargs):
-        super(PlanNettoyageBanner, self).__init__()
+        super(CategorieBanner, self).__init__()
 
         self.app = App.get_running_app()
 
@@ -133,12 +129,11 @@ class PlanNettoyageBanner(GridLayout):
         running_app.collaborateur_choice = widget.text
 
 
-class PlanNettoyageBannerSettings(GridLayout):
+class CategorieBannerSettings(GridLayout):
     rows = 1
 
     def __init__(self, **kwargs):
-        app = App.get_running_app()
-        super(PlanNettoyageBannerSettings, self).__init__()
+        super(CategorieBannerSettings, self).__init__()
 
         self.nom = kwargs.pop('nom')
         self.id = kwargs.pop('id')
@@ -158,8 +153,7 @@ class PlanNettoyageBannerSettings(GridLayout):
         # right floatlayout - Bouton delete
         right_fl = FloatLayout()
         right_fl_delete = ImageButton(source="icons/delete.png", size_hint=(.4, .4), pos_hint={"top": .7, "right": 1},
-                                      on_release=partial(ManagePlanNettoyage().delete_data,
-                                                         self.id))
+                                      on_release=partial(ManageCategories().delete_data, self.id))
         right_fl.add_widget(right_fl_delete)
 
         self.add_widget(left_fl)

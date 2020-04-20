@@ -35,10 +35,10 @@ class ManageElementRefrigerant:
     def load_elements_refrigerants_settings(self):
         self.settings_data["settings_elements_refrigerants_screen_banner"].clear_widgets()
         try:
-            element_list = self.query_firebase_get_element_refrigerant()
-            for element in element_list:
-                settings_element_refrigerant_banner = ElementRefrigerantBannerSettings(nom=element['nom'],
-                                                                                       element_id=element['id'])
+            response_list = self.query_firebase_get_data()
+            for response in response_list:
+                settings_element_refrigerant_banner = ElementRefrigerantBannerSettings(nom=response['nom'],
+                                                                                       id=response['id'])
                 self.settings_data["settings_elements_refrigerants_screen_banner"].add_widget(
                     settings_element_refrigerant_banner)
         except Exception as e:
@@ -48,7 +48,7 @@ class ManageElementRefrigerant:
         self.app.root.ids["temperature_frigo_screen"].ids["temp_frigo_selection_element_grid"].clear_widgets()
         # Temp Frigo
         try:
-            element_list = self.query_firebase_get_element_refrigerant()
+            element_list = self.query_firebase_get_data()
         except Exception as e:
             print(e)
             return
@@ -60,7 +60,7 @@ class ManageElementRefrigerant:
             except Exception as e:
                 print('Element Temp Frigo banner:', e)
 
-    def get_data_settings_elements_refrigerants(self):
+    def get_data_settings(self):
         nom_element = self.settings_data['settings_element_refrigerant_nom'].text
 
         if nom_element == "":
@@ -70,38 +70,38 @@ class ManageElementRefrigerant:
         else:
             self.settings_data['settings_element_refrigerant_nom'].background_color = [1, 1, 1, 1]
 
-        self.query_firebase_add_element_refrigerant(nom_element)
+        self.query_firebase_add_data(nom_element)
         self.settings_data['settings_element_refrigerant_nom'].text = ""
         self.load_elements_refrigerants_settings()
         self.load_elements_refrigerants()
 
-    def delete_elements_refrigerants(self, *args):
-        element_id = args[0]
-        self.query_firebase_delete_element_refrigerant(element_id)
+    def delete_data(self, *args):
+        id = args[0]
+        self.query_firebase_delete_data(id)
         self.load_elements_refrigerants_settings()
         self.load_elements_refrigerants()
 
-    def query_firebase_add_element_refrigerant(self, nom_element):
+    def query_firebase_add_data(self, nom):
         data = {'date': datetime.datetime.today().strftime("%d/%m/%Y %H:%M"),
-                'nom': format_text(nom_element), 'id': str(uuid.uuid4())}
+                'nom': format_text(nom), 'id': str(uuid.uuid4())}
 
         url = self.base_url + ".json"
 
         requests.post(url, data=json.dumps(data))
 
-    def query_firebase_get_element_refrigerant(self):
+    def query_firebase_get_data(self):
         url = self.base_url + ".json"
         response = requests.get(url=url)
-        elements_refrigerants_json = json.loads(response.content.decode())
+        response_json = json.loads(response.content.decode())
 
-        elements_refrigerants_list = []
+        response_list = []
 
-        for k, v in elements_refrigerants_json.items():
-            elements_refrigerants_list.append({'nom': v['nom'], 'id': k})
+        for k, v in response_json.items():
+            response_list.append({'nom': v['nom'], 'id': k})
 
-        return elements_refrigerants_list
+        return response_list
 
-    def query_firebase_delete_element_refrigerant(self, id):
+    def query_firebase_delete_data(self, id):
         url = self.base_url + "/{0}.json".format(id)
         response = requests.delete(url=url)
         return json.dumps(response.content.decode())
@@ -151,7 +151,7 @@ class ElementRefrigerantBannerSettings(GridLayout):
         super(ElementRefrigerantBannerSettings, self).__init__()
 
         self.nom = kwargs.pop('nom')
-        self.element_id = kwargs.pop('element_id')
+        self.id = kwargs.pop('id')
 
         with self.canvas.before:
             Color(rgba=(utils.get_color_from_hex("#0062D1")))
@@ -168,8 +168,7 @@ class ElementRefrigerantBannerSettings(GridLayout):
         # right floatlayout - Bouton delete
         right_fl = FloatLayout()
         right_fl_delete = ImageButton(source="icons/delete.png", size_hint=(.4, .4), pos_hint={"top": .7, "right": 1},
-                                      on_release=partial(ManageElementRefrigerant().delete_elements_refrigerants,
-                                                         self.element_id))
+                                      on_release=partial(ManageElementRefrigerant().delete_data, self.id))
         right_fl.add_widget(right_fl_delete)
 
         self.add_widget(left_fl)

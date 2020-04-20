@@ -1,8 +1,7 @@
 #:import utils kivy.utils
-#:import ManagePlanNettoyageLieu HaccpApp.haccpApp.src.pyScripts.plan_nettoyage.ManagePlanNettoyageLieu
-#:import ManagePlanNettoyageElement HaccpApp.haccpApp.src.pyScripts.plan_nettoyage.ManagePlanNettoyageElement
+#:import ManageElementRefrigerant HaccpApp.haccpApp.src.pyScripts.elements_refrigerants.ManageElementRefrigerant
 
-<SettingsPlanNettoyageScreen>:
+<SettingsElementsRefrigerantsScreen>:
     FloatLayout:
         GridLayout:
             cols: 3
@@ -33,38 +32,37 @@
                         self.text = "Collaborateurs"
                         app.change_screen("settings_collaborateurs_screen", "left")
                 LabelButton:
-                    id: btn_settings_elements_refrigeres
-                    canvas:
-                        Color:
-                            rgb: utils.get_color_from_hex("#0062D1")
-                        Line:
-                            width: 2
-                            rectangle: self.x, self.y, self.width, self.height
-                    text: "Éléments régrigérés"
-                    background_color: utils.get_color_from_hex("#000000")
-                    color: utils.get_color_from_hex("#0062D1")
-                    markup: True
-                    on_press:
-                        self.text = "[b]Éléments régrigérés[/b]"
-                    on_release:
-                        self.text = "Éléments régrigérés"
-                        app.change_screen("settings_elements_refrigerants_screen", "left")
-                LabelButton:
-                    id: btn_settings_plan_nettoyage
+                    id: btn_settings_elements_refrigerants
                     canvas.before:
                         Color:
                             rgb: utils.get_color_from_hex("#0062D1")
                         Rectangle:
                             size: self.size
                             pos: self.pos
-                    text: "Plan de nettoyage"
+                    text: "Éléments régrigérants"
                     color: utils.get_color_from_hex("#ffffff")
+                    markup: True
+                    on_press:
+                        self.text = "[b]Éléments régrigérants[/b]"
+                    on_release:
+                        self.text = "Éléments régrigérants"
+                LabelButton:
+                    id: btn_settings_plan_nettoyage
+                    canvas:
+                        Color:
+                            rgb: utils.get_color_from_hex("#0062D1")
+                        Line:
+                            width: 2
+                            rectangle: self.x, self.y, self.width, self.height
+                    text: "Plan de nettoyage"
+                    background_color: utils.get_color_from_hex("#000000")
+                    color: utils.get_color_from_hex("#0062D1")
                     markup: True
                     on_press:
                         self.text = "[b]Plan de nettoyage[/b]"
                     on_release:
-                        print('Plan de nettoyage')
                         self.text = "Plan de nettoyage"
+                        app.change_screen("settings_plan_nettoyage_screen", "left")
                 LabelButton:
                     id: btn_settings_fournisseurs
                     canvas:
@@ -78,11 +76,10 @@
                     color: utils.get_color_from_hex("#0062D1")
                     markup: True
                     on_press:
-                        print('press')
                         self.text = "[b]Fournisseurs[/b]"
                     on_release:
-                        print('Fournisseurs')
                         self.text = "Fournisseurs"
+                        app.change_screen("settings_fournisseurs_screen", "left")
                 LabelButton:
                     id: btn_settings_friteuses
                     canvas:
@@ -136,15 +133,15 @@
                             Line:
                                 width: 2
                                 rectangle: self.x, self.y, self.width, self.height
-                        text: "Mes lieux"
+                        text: "Mes éléments réfrigérants"
                         background_color: utils.get_color_from_hex("#000000")
                         color: utils.get_color_from_hex("#0062D1")
                 ScrollView:
                     pos_hint: {"top": .8, "left": 1}
-                    size_hint: 1, .5
+                    size_hint: 1, .7
                     GridLayout:
                         # Banner grid
-                        id: settings_plan_nettoyage_lieu_screen_banner
+                        id: settings_elements_refrigerants_screen_banner
                         cols: 1
                         spacing: 5, 5
                         padding: 20, 20
@@ -153,46 +150,6 @@
                         width: self.minimum_width
                         row_default_height: '60dp'
                         row_force_default: True
-                GridLayout:
-                    cols: 1
-                    pos_hint: {"top": .3, "left": 1}
-                    size_hint: 1, .1
-                    TextInput:
-                        pos_hint: {"top": .65, "left": 1}
-                        size_hint: .1, .1
-                        id: settings_plan_nettoyage_lieu_nom
-                        hint_text: "Nom"
-
-                GridLayout:
-                    cols: 2
-                    pos_hint: {"top": .2, "left": 1}
-                    size_hint: 1, .1
-                    spacing: 10, 10
-                    padding: 0, 10
-                    LabelButton:
-                        canvas.before:
-                            Color:
-                                rgb: utils.get_color_from_hex("#C04A4A") if self.state == 'normal' else utils.get_color_from_hex("#C00000")
-                            Rectangle:
-                                size: self.size
-                                pos: self.pos
-                        text: "[u]Annuler[/u]"
-                        markup: True
-                        on_release:
-                            app.change_screen("settings_screen", direction="right")
-                    LabelButton:
-                        canvas.before:
-                            Color:
-                                rgb: utils.get_color_from_hex("#3CAE70") if self.state == 'normal' else utils.get_color_from_hex("#00B050")
-                            Rectangle:
-                                size: self.size
-                                pos: self.pos
-                        text: "[u]Valider[/u]"
-                        markup: True
-                        on_release:
-                            ManagePlanNettoyageLieu().get_data_settings_plan_nettoyage_lieu()
-
-
             GridLayout:
                 pos_hint: {"top": 0.8, "left": 1}
                 size_hint: .33, .8
@@ -210,58 +167,47 @@
                             Line:
                                 width: 2
                                 rectangle: self.x, self.y, self.width, self.height
-                        text: "Mes éléments"
+                        text: "Ajouter un élément réfrigérant"
                         background_color: utils.get_color_from_hex("#000000")
                         color: utils.get_color_from_hex("#0062D1")
-                ScrollView:
-                    pos_hint: {"top": .8, "left": 1}
-                    size_hint: 1, .5
-                    GridLayout:
-                        # Banner grid
-                        id: settings_plan_nettoyage_element_screen_banner
-                        cols: 1
-                        spacing: 5, 5
-                        padding: 20, 20
-                        size_hint_y: None
-                        height: self.minimum_height
-                        width: self.minimum_width
-                        row_default_height: '60dp'
-                        row_force_default: True
-                GridLayout:
-                    cols: 1
-                    pos_hint: {"top": .3, "left": 1}
-                    size_hint: 1, .1
-                    TextInput:
-                        pos_hint: {"top": .65, "left": 1}
-                        size_hint: .1, .1
-                        id: settings_plan_nettoyage_element_nom
-                        hint_text: "Nom"
 
                 GridLayout:
-                    cols: 2
-                    pos_hint: {"top": .2, "left": 1}
-                    size_hint: 1, .1
+                    cols: 1
+                    pos_hint: {"top": 0.8, "left": 1}
+                    size_hint: 1, .7
                     spacing: 10, 10
                     padding: 0, 10
-                    LabelButton:
-                        canvas.before:
-                            Color:
-                                rgb: utils.get_color_from_hex("#C04A4A") if self.state == 'normal' else utils.get_color_from_hex("#C00000")
-                            Rectangle:
-                                size: self.size
-                                pos: self.pos
-                        text: "[u]Annuler[/u]"
-                        markup: True
-                        on_release:
-                            app.change_screen("settings_screen", direction="right")
-                    LabelButton:
-                        canvas.before:
-                            Color:
-                                rgb: utils.get_color_from_hex("#3CAE70") if self.state == 'normal' else utils.get_color_from_hex("#00B050")
-                            Rectangle:
-                                size: self.size
-                                pos: self.pos
-                        text: "[u]Valider[/u]"
-                        markup: True
-                        on_release:
-                            ManagePlanNettoyageElement().get_data_settings_plan_nettoyage_element()
+                    TextInput:
+                        pos_hint: {"top": .75, "left": 1}
+                        size_hint: .1, .1
+                        id: settings_element_refrigerant_nom
+                        hint_text: "Nom"
+                    GridLayout:
+                        cols: 2
+                        pos_hint: {"top": .1, "left": 1}
+                        size_hint: 1, .1
+                        spacing: 10, 10
+                        padding: 0, 10
+                        LabelButton:
+                            canvas.before:
+                                Color:
+                                    rgb: utils.get_color_from_hex("#C04A4A") if self.state == 'normal' else utils.get_color_from_hex("#C00000")
+                                Rectangle:
+                                    size: self.size
+                                    pos: self.pos
+                            text: "[u]Annuler[/u]"
+                            markup: True
+                            on_release:
+                                app.change_screen("settings_screen", direction="right")
+                        LabelButton:
+                            id: btn_settings_collaborateurs_valider
+                            canvas.before:
+                                Color:
+                                    rgb: utils.get_color_from_hex("#3CAE70") if self.state == 'normal' else utils.get_color_from_hex("#00B050")
+                                Rectangle:
+                                    size: self.size
+                                    pos: self.pos
+                            text: "[u]Valider[/u]"
+                            markup: True
+                            on_release:
+                                ManageElementRefrigerant().get_data_settings()

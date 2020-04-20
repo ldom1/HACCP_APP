@@ -2,8 +2,9 @@
 #:include kv/temperature_frigo_screen.kv
 #:include kv/settings_screen.kv
 #:include kv/settings_collaborateurs_screen.kv
-#:include kv/settings_elements_refrigerants.kv
-#:include kv/settings_plan_nettoyage.kv
+#:include kv/settings_elements_refrigerants_screen.kv
+#:include kv/settings_plan_nettoyage_screen.kv
+#:include kv/settings_fournisseurs_screen.kv
 #:import utils kivy.utils
 
 GridLayout:
@@ -75,3 +76,6 @@ GridLayout:
             SettingsPlanNettoyageScreen:
                 name: "settings_plan_nettoyage_screen"
                 id: settings_plan_nettoyage_screen
+            SettingsFournisseursScreen:
+                name: "settings_fournisseurs_screen"
+                id: settings_fournisseurs_screen
