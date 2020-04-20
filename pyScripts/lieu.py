@@ -33,18 +33,18 @@ class ManageLieu:
         self.base_url = "https://haccpapp-40c63.firebaseio.com/test_user/settings/plan_nettoyage_lieu"
 
     def get_data_settings(self):
-        nom = self.settings_plan_net_lieu_data['settings_plan_nettoyage_lieu_nom'].text
+        nom = self.settings_plan_net_lieu_data['settings_lieu_nom'].text
 
         if nom == "":
             self.settings_plan_net_lieu_data[
-                'settings_plan_nettoyage_lieu_nom'].background_color = utils.get_color_from_hex(
+                'settings_lieu_nom'].background_color = utils.get_color_from_hex(
                 "#C04A4A")
             return
         else:
-            self.settings_plan_net_lieu_data['settings_plan_nettoyage_lieu_nom'].background_color = [1, 1, 1, 1]
+            self.settings_plan_net_lieu_data['settings_lieu_nom'].background_color = [1, 1, 1, 1]
 
         self.query_firebase_add_data(nom=nom)
-        self.settings_plan_net_lieu_data['settings_plan_nettoyage_lieu_nom'].text = ""
+        self.settings_plan_net_lieu_data['settings_lieu_nom'].text = ""
         self.load_lieu_settings()
         self.load_lieu()
 
@@ -55,12 +55,12 @@ class ManageLieu:
         self.load_lieu()
 
     def load_lieu_settings(self):
-        self.settings_plan_net_lieu_data["settings_plan_nettoyage_lieu_screen_banner"].clear_widgets()
+        self.settings_plan_net_lieu_data["settings_lieu_screen_banner"].clear_widgets()
         try:
             response_list = self.query_firebase_get_data()
             for response in response_list:
                 settings_lieu_banner = LieuBannerSettings(nom=response['nom'], id=response['id'])
-                self.settings_plan_net_lieu_data["settings_plan_nettoyage_lieu_screen_banner"].add_widget(
+                self.settings_plan_net_lieu_data["settings_lieu_screen_banner"].add_widget(
                     settings_lieu_banner)
         except Exception as e:
             print('Settings Plan nettoyage lieu banner:', e)

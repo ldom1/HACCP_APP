@@ -33,17 +33,17 @@ class ManagePlanNettoyage:
         self.base_url = "https://haccpapp-40c63.firebaseio.com/test_user/settings/plan_nettoyage_element"
 
     def get_data_settings(self):
-        nom = self.settings_data['settings_plan_nettoyage_element_nom'].text
+        nom = self.settings_data['settings_plan_nettoyage_nom'].text
 
         if nom == "":
-            self.settings_data['settings_plan_nettoyage_element_nom'].background_color = utils.get_color_from_hex(
+            self.settings_data['settings_plan_nettoyage_nom'].background_color = utils.get_color_from_hex(
                 "#C04A4A")
             return
         else:
-            self.settings_data['settings_plan_nettoyage_element_nom'].background_color = [1, 1, 1, 1]
+            self.settings_data['settings_plan_nettoyage_nom'].background_color = [1, 1, 1, 1]
 
         self.query_firebase_add_data(nom=nom)
-        self.settings_data['settings_plan_nettoyage_element_nom'].text = ""
+        self.settings_data['settings_plan_nettoyage_nom'].text = ""
         self.load_plan_nettoyage_settings()
         self.load_plan_nettoyage()
 
@@ -54,14 +54,14 @@ class ManagePlanNettoyage:
         self.load_plan_nettoyage()
 
     def load_plan_nettoyage_settings(self):
-        self.settings_data["settings_plan_nettoyage_element_screen_banner"].clear_widgets()
+        self.settings_data["settings_plan_nettoyage_screen_banner"].clear_widgets()
         try:
             response_list = self.query_firebase_get_data()
             for response in response_list:
                 settings_plan_nettoyage_element_banner = PlanNettoyageBannerSettings(
                     nom=response['nom'],
                     id=response['id'])
-                self.settings_data["settings_plan_nettoyage_element_screen_banner"].add_widget(
+                self.settings_data["settings_plan_nettoyage_screen_banner"].add_widget(
                     settings_plan_nettoyage_element_banner)
         except Exception as e:
             print('Settings Plan nettoyage element banner:', e)
