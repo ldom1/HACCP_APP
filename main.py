@@ -5,6 +5,7 @@ from kivy.uix.screenmanager import Screen
 from kivy.uix.button import ButtonBehavior
 from kivy.uix.image import Image
 
+from HaccpApp.haccpApp.src.pyScripts.operations_plan_nettoyage import ManagePlanNettoyageScreen
 from HaccpApp.haccpApp.src.pyScripts.settings_categorie import ManageCategories
 from HaccpApp.haccpApp.src.pyScripts.settings_collaborateur import ManageCollaborateurs
 from HaccpApp.haccpApp.src.pyScripts.settings_element_refrigerant import ManageElementRefrigerant
@@ -99,7 +100,9 @@ class MainApp(App):
     def change_screen(self, screen_name, direction):
         # Clean selected screen
         if screen_name == "operations_temperature_frigo_screen":
-            ManageTemperatureFridgeScreen().clear_temperature_fridge_screen()
+            ManageTemperatureFridgeScreen().clear_screen()
+        elif screen_name == "operations_plan_nettoyage_screen":
+            ManagePlanNettoyageScreen().clear_screen()
         # Get the screen manager from kv file
         screen_manager = self.root.ids['screen_manager']
         screen_manager.transition.direction = direction

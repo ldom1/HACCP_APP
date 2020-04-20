@@ -22,23 +22,34 @@ class ManagePlanNettoyageScreen:
 
         try:
             lieu_choice = self.app.lieu_choice
+            if not lieu_choice:
+                self.plan_nettoyage_data['warning'].text = "Veuillez sélectionner un lieu"
+                return
         except Exception as e:
             print(e)
-            self.plan_nettoyage_data['plan_nettoyage_warning'].text = "Veuillez sélectionner un lieu"
+            self.plan_nettoyage_data['warning'].text = "Veuillez sélectionner un lieu"
             return
         try:
             plan_nettoyage_choice = self.app.plan_nettoyage_choice
+            if not plan_nettoyage_choice:
+                self.plan_nettoyage_data['warning'].text = "Veuillez sélectionner un élément à nettoyer"
+                return
         except Exception as e:
             print(e)
-            self.plan_nettoyage_data['plan_nettoyage_warning'].text = "Veuillez sélectionner un élément à nettoyer"
+            self.plan_nettoyage_data['warning'].text = "Veuillez sélectionner un élément à nettoyer"
             return
 
         try:
             collaborateur_choice = self.app.collaborateur_choice
+            if not collaborateur_choice:
+                self.plan_nettoyage_data['warning'].text = "Veuillez sélectionner un collaborateur"
+                return
         except Exception as e:
             print(e)
-            self.plan_nettoyage_data['plan_nettoyage_warning'].text = "Veuillez sélectionner un collaborateur"
+            self.plan_nettoyage_data['warning'].text = "Veuillez sélectionner un collaborateur"
             return
+
+        self.plan_nettoyage_data['warning'].text = ""
 
         data = {'date': datetime.datetime.today().strftime("%d/%m/%Y %H:%M"), 'lieu': lieu_choice,
                 'plan_nettoyage': plan_nettoyage_choice, 'collaborateur': collaborateur_choice,
@@ -48,8 +59,11 @@ class ManagePlanNettoyageScreen:
         print(response.content.decode())
 
         self.app.change_screen(screen_name='home_screen', direction='right')
+        self.app.lieu_choice = None
+        self.app.plan_nettoyage_choice = None
+        self.app.collaborateur_choice = None
 
-    def clear_temperature_fridge_screen(self):
+    def clear_screen(self):
         clean_widget(self.plan_nettoyage_data["plan_nettoyage_selection_lieu_grid"])
         clean_widget(self.plan_nettoyage_data["plan_nettoyage_selection_plan_nettoyage"])
         clean_widget(self.plan_nettoyage_data["plan_nettoyage_selection_collaborateur_grid"])

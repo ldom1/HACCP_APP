@@ -35,18 +35,24 @@ class ManageTemperatureFridgeScreen:
 
         try:
             element_refrigerant_choice = self.app.element_refrigerant_choice
+            if not element_refrigerant_choice:
+                self.temperature_fridge_data['warning'].text = "Veuillez sélectionner un élément réfrigérant"
+                return
         except Exception as e:
             print(e)
-            self.temperature_fridge_data['temp_fridge_warning'].text = "Veuillez sélectionner un élément réfrigérant"
+            self.temperature_fridge_data['warning'].text = "Veuillez sélectionner un élément réfrigérant"
             return
         try:
             collaborateur_choice = self.app.collaborateur_choice
+            if not collaborateur_choice:
+                self.temperature_fridge_data['warning'].text = "Veuillez sélectionner un collaborateur"
+                return
         except Exception as e:
             print(e)
-            self.temperature_fridge_data['temp_fridge_warning'].text = "Veuillez sélectionner un collaborateur"
+            self.temperature_fridge_data['warning'].text = "Veuillez sélectionner un collaborateur"
             return
 
-        self.temperature_fridge_data['temp_fridge_warning'].text = ""
+        self.temperature_fridge_data['warning'].text = ""
 
         data = {'date': datetime.datetime.today().strftime("%d/%m/%Y %H:%M"),
                 'element_refrigerant': element_refrigerant_choice,
@@ -58,8 +64,10 @@ class ManageTemperatureFridgeScreen:
         print(response.content.decode())
 
         self.app.change_screen(screen_name='home_screen', direction='right')
+        self.app.element_refrigerant_choice = None
+        self.app.collaborateur_choice = None
 
-    def clear_temperature_fridge_screen(self):
+    def clear_screen(self):
         clean_widget(self.temperature_fridge_data["temp_frigo_selection_element_grid"])
         clean_widget(self.temperature_fridge_data["temp_frigo_selection_collaborateur_grid"])
         self.temperature_fridge_data['label_temp_fridge'].text = "3 °C"
