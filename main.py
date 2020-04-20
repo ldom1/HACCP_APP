@@ -14,7 +14,7 @@ from HaccpApp.haccpApp.src.pyScripts.fournisseur import ManageFournisseurs
 from HaccpApp.haccpApp.src.pyScripts.friteuse import ManageFriteuse
 from HaccpApp.haccpApp.src.pyScripts.lieu import ManageLieu
 from HaccpApp.haccpApp.src.pyScripts.plan_nettoyage import ManagePlanNettoyage
-from HaccpApp.haccpApp.src.pyScripts.temperature_fridge_script import ManageTemperatureFridgeScreen
+from HaccpApp.haccpApp.src.pyScripts.temperature_frigidaire import ManageTemperatureFridgeScreen
 
 
 class HomeScreen(Screen):
