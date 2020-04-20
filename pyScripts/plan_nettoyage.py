@@ -57,15 +57,15 @@ class ManagePlanNettoyageLieu:
     def load_plan_nettoyage_lieu_settings(self):
         self.settings_plan_net_lieu_data["settings_plan_nettoyage_lieu_screen_banner"].clear_widgets()
         try:
-            collaborateurs_list = self.query_firebase_get_plan_nettoyage_lieu()
-            for collaborateur in collaborateurs_list:
-                settings_collaborateur_banner = PlanNettoyageLieuBannerSettings(nom=collaborateur['nom'],
-                                                                                plan_nettoyage_lieu_id=collaborateur[
-                                                                                    'id'])
+            plan_nettoyage_lieu_list = self.query_firebase_get_plan_nettoyage_lieu()
+            for plan_nettoyage_lieu in plan_nettoyage_lieu_list:
+                settings_plan_nettoyage_banner = PlanNettoyageLieuBannerSettings(nom=plan_nettoyage_lieu['nom'],
+                                                                                 plan_nettoyage_lieu_id=
+                                                                                 plan_nettoyage_lieu['id'])
                 self.settings_plan_net_lieu_data["settings_plan_nettoyage_lieu_screen_banner"].add_widget(
-                    settings_collaborateur_banner)
+                    settings_plan_nettoyage_banner)
         except Exception as e:
-            print('Settings collaborateurs banner:', e)
+            print('Settings Plan nettoyage lieu banner:', e)
 
     def load_plan_nettoyage_lieu(self):
         print('to do')
@@ -138,7 +138,6 @@ class PlanNettoyageLieuBannerSettings(GridLayout):
     rows = 1
 
     def __init__(self, **kwargs):
-        app = App.get_running_app()
         super(PlanNettoyageLieuBannerSettings, self).__init__()
 
         self.nom = kwargs.pop('nom')
@@ -171,97 +170,148 @@ class PlanNettoyageLieuBannerSettings(GridLayout):
         self.rect.size = self.size
 
 
-class ManagePlanNettoyageElements:
+class ManagePlanNettoyageElement:
 
     def __init__(self):
         self.app = App.get_running_app()
-        self.settings_collaborateur = self.app.root.ids["settings_collaborateurs_screen"]
-        self.settings_collaborateur_data = self.settings_collaborateur.ids
-        self.base_url = "https://haccpapp-40c63.firebaseio.com/test_user/settings/collaborateurs"
+        self.settings_plan_net_element = self.app.root.ids["settings_plan_nettoyage_screen"]
+        self.settings_plan_net_element_data = self.settings_plan_net_element.ids
+        self.base_url = "https://haccpapp-40c63.firebaseio.com/test_user/settings/plan_nettoyage_element"
 
-    def get_data_settings_collaborateurs(self):
-        nom_collaborateur = self.settings_collaborateur_data['settings_collaborateurs_nom'].text
-        prenom_collaborateur = self.settings_collaborateur_data['settings_collaborateurs_prenom'].text
+    def get_data_settings_plan_nettoyage_element(self):
+        nom_plan_nettoyage_elt = self.settings_plan_net_element_data['settings_plan_nettoyage_element_nom'].text
 
-        if nom_collaborateur == "":
-            self.settings_collaborateur_data['settings_collaborateurs_nom'].background_color = utils.get_color_from_hex(
+        if nom_plan_nettoyage_elt == "":
+            self.settings_plan_net_element_data[
+                'settings_plan_nettoyage_element_nom'].background_color = utils.get_color_from_hex(
                 "#C04A4A")
             return
         else:
-            self.settings_collaborateur_data['settings_collaborateurs_nom'].background_color = [1, 1, 1, 1]
+            self.settings_plan_net_element_data['settings_plan_nettoyage_element_nom'].background_color = [1, 1, 1, 1]
 
-        if prenom_collaborateur == "":
-            self.settings_collaborateur_data[
-                'settings_collaborateurs_prenom'].background_color = utils.get_color_from_hex("#C04A4A")
-            return
-        else:
-            self.settings_collaborateur_data['settings_collaborateurs_prenom'].background_color = [1, 1, 1, 1]
+        self.query_firebase_add_plan_nettoyage_element(nom_plan_nettoyage_element=nom_plan_nettoyage_elt)
+        self.settings_plan_net_element_data['settings_plan_nettoyage_element_nom'].text = ""
+        self.load_plan_nettoyage_element_settings()
+        self.load_plan_nettoyage_element()
 
-        self.query_firebase_add_collaborateur(nom_collaborateur=nom_collaborateur,
-                                              prenom_collaborateur=prenom_collaborateur)
-        self.settings_collaborateur_data['settings_collaborateurs_nom'].text = ""
-        self.settings_collaborateur_data['settings_collaborateurs_prenom'].text = ""
-        self.load_collaborateurs_settings()
-        self.load_collaborateurs()
+    def delete_plan_nettoyage_element(self, *args):
+        plan_nettoyage_element_id = args[0]
+        self.query_firebase_delete_plan_nettoyage_element(plan_nettoyage_element_id)
+        self.load_plan_nettoyage_element_settings()
+        self.load_plan_nettoyage_element()
 
-    def delete_collaborateur(self, *args):
-        collaborateur_id = args[0]
-        self.query_firebase_delete_collaborateur(collaborateur_id)
-        self.load_collaborateurs_settings()
-        self.load_collaborateurs()
-
-    def load_collaborateurs_settings(self):
-        self.settings_collaborateur_data["settings_collaborateurs_screen_banner"].clear_widgets()
+    def load_plan_nettoyage_element_settings(self):
+        self.settings_plan_net_element_data["settings_plan_nettoyage_element_screen_banner"].clear_widgets()
         try:
-            collaborateurs_list = self.query_firebase_get_collaborateur()
-            for collaborateur in collaborateurs_list:
-                settings_collaborateur_banner = CollaborateursBannerSettings(prenom=collaborateur['prenom'],
-                                                                             nom=collaborateur['nom'],
-                                                                             collaborateur_id=collaborateur['id'])
-                self.settings_collaborateur_data["settings_collaborateurs_screen_banner"].add_widget(
-                    settings_collaborateur_banner)
+            plan_nettoyage_element_list = self.query_firebase_get_plan_nettoyage_element()
+            for plan_nettoyage_element in plan_nettoyage_element_list:
+                settings_plan_nettoyage_element_banner = PlanNettoyageElementBannerSettings(
+                    nom=plan_nettoyage_element['nom'],
+                    plan_nettoyage_element_id=plan_nettoyage_element['id'])
+                self.settings_plan_net_element_data["settings_plan_nettoyage_element_screen_banner"].add_widget(
+                    settings_plan_nettoyage_element_banner)
         except Exception as e:
-            print('Settings collaborateurs banner:', e)
+            print('Settings Plan nettoyage element banner:', e)
 
-    def load_collaborateurs(self):
-        self.app.root.ids["temperature_frigo_screen"].ids["temp_frigo_selection_collaborateur_grid"].clear_widgets()
-        # Temp Frigo
-        try:
-            collaborateurs_list = self.query_firebase_get_collaborateur()
-        except Exception as e:
-            print(e)
-            return
-        for collaborateur in collaborateurs_list:
-            try:
-                settings_collaborateur_banner = CollaborateursBanner(prenom=collaborateur['prenom'],
-                                                                     nom=collaborateur['nom'])
-                self.app.root.ids["temperature_frigo_screen"].ids["temp_frigo_selection_collaborateur_grid"].add_widget(
-                    settings_collaborateur_banner)
-            except Exception as e:
-                print('Collaborateurs Temp Frigo banner:', e)
+    def load_plan_nettoyage_element(self):
+        print('to do')
 
-    def query_firebase_get_collaborateur(self):
+    def query_firebase_get_plan_nettoyage_element(self):
         url = self.base_url + ".json"
         response = requests.get(url=url)
-        collaborateur_json = json.loads(response.content.decode())
+        plan_nettoyage_element_json = json.loads(response.content.decode())
 
-        collaborateur_list = []
+        plan_nettoyage_element_list = []
 
-        for k, v in collaborateur_json.items():
-            collaborateur_list.append({'nom': v['nom'], 'prenom': v['prenom'], 'id': k})
+        for k, v in plan_nettoyage_element_json.items():
+            plan_nettoyage_element_list.append({'nom': v['nom'], 'id': k})
 
-        return collaborateur_list
+        return plan_nettoyage_element_list
 
-    def query_firebase_delete_collaborateur(self, id):
+    def query_firebase_delete_plan_nettoyage_element(self, id):
         url = self.base_url + "/{0}.json".format(id)
         response = requests.delete(url=url)
         return json.dumps(response.content.decode())
 
-    def query_firebase_add_collaborateur(self, nom_collaborateur, prenom_collaborateur):
+    def query_firebase_add_plan_nettoyage_element(self, nom_plan_nettoyage_element):
         data = {'date': datetime.datetime.today().strftime("%d/%m/%Y %H:%M"),
-                'prenom': format_text(prenom_collaborateur),
-                'nom': format_text(nom_collaborateur), 'id': str(uuid.uuid4())}
+                'nom': format_text(nom_plan_nettoyage_element), 'id': str(uuid.uuid4())}
 
         url = self.base_url + ".json"
 
         requests.post(url, data=json.dumps(data))
+
+
+class PlanNettoyageElementBanner(GridLayout):
+    rows = 1
+
+    def __init__(self, **kwargs):
+        super(PlanNettoyageElementBanner, self).__init__()
+
+        self.app = App.get_running_app()
+
+        self.nom = kwargs.pop('nom')
+
+        with self.canvas.before:
+            Color(rgba=(utils.get_color_from_hex("#0062D1")))
+            self.rect = Rectangle(size=self.size, pos=self.pos)
+        self.bind(pos=self.update_rect, size=self.update_rect)
+
+        # Left floatlayout
+        left_fl = FloatLayout()
+        left_fl_title = LabelButton(text=self.nom, size_hint=(1, 1), pos_hint={"top": 1, "right": 1},
+                                    color=utils.get_color_from_hex("#ffffff"),
+                                    on_release=partial(self.select_plan_nettoyage_element, self.app))
+
+        left_fl.add_widget(left_fl_title)
+
+        self.add_widget(left_fl)
+
+    def update_rect(self, *args):
+        self.rect.pos = self.pos
+        self.rect.size = self.size
+
+    def select_plan_nettoyage_element(self, *args):
+        clean_widget(app=self.app, screen_id="temperature_frigo_screen",
+                     widget_id="temp_frigo_selection_collaborateur_grid")
+        running_app = args[0]
+        widget = args[1]
+        widget.color = utils.get_color_from_hex("#35477d")
+        running_app.collaborateur_choice = widget.text
+
+
+class PlanNettoyageElementBannerSettings(GridLayout):
+    rows = 1
+
+    def __init__(self, **kwargs):
+        app = App.get_running_app()
+        super(PlanNettoyageElementBannerSettings, self).__init__()
+
+        self.nom = kwargs.pop('nom')
+        self.plan_nettoyage_element_id = kwargs.pop('plan_nettoyage_element_id')
+
+        with self.canvas.before:
+            Color(rgba=(utils.get_color_from_hex("#0062D1")))
+            self.rect = Rectangle(size=self.size, pos=self.pos)
+        self.bind(pos=self.update_rect, size=self.update_rect)
+
+        # Left floatlayout
+        left_fl = FloatLayout()
+        left_fl_title = LabelButton(text=self.nom, size_hint=(.9, 1), pos_hint={"top": 1, "right": 1},
+                                    color=utils.get_color_from_hex("#ffffff"))
+
+        left_fl.add_widget(left_fl_title)
+
+        # right floatlayout - Bouton delete
+        right_fl = FloatLayout()
+        right_fl_delete = ImageButton(source="icons/delete.png", size_hint=(.4, .4), pos_hint={"top": .7, "right": 1},
+                                      on_release=partial(ManagePlanNettoyageElement().delete_plan_nettoyage_element,
+                                                         self.plan_nettoyage_element_id))
+        right_fl.add_widget(right_fl_delete)
+
+        self.add_widget(left_fl)
+        self.add_widget(right_fl)
+
+    def update_rect(self, *args):
+        self.rect.pos = self.pos
+        self.rect.size = self.size

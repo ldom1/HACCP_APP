@@ -8,6 +8,7 @@ from kivy import utils
 
 from HaccpApp.haccpApp.src.pyScripts.collaborateurs import ManageCollaborateurs
 from HaccpApp.haccpApp.src.pyScripts.elements_refrigerants import ManageElementRefrigerant
+from HaccpApp.haccpApp.src.pyScripts.plan_nettoyage import ManagePlanNettoyageElement, ManagePlanNettoyageLieu
 from HaccpApp.haccpApp.src.pyScripts.temperature_fridge_script import ManageTemperatureFridgeScreen
 
 
@@ -56,6 +57,12 @@ class MainApp(App):
 
         ManageElementRefrigerant().load_elements_refrigerants()
         ManageElementRefrigerant().load_elements_refrigerants_settings()
+
+        # ManagePlanNettoyageLieu().load_()
+        ManagePlanNettoyageLieu().load_plan_nettoyage_lieu_settings()
+
+        # ManagePlanNettoyageElement().load_()
+        ManagePlanNettoyageElement().load_plan_nettoyage_element_settings()
 
     def change_screen(self, screen_name, direction):
         # Clean selected screen
