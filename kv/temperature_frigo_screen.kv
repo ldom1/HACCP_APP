@@ -4,7 +4,7 @@
     GridLayout:
         cols: 3
         pos_hint: {"top": 1, "left": 1}
-        size_hint: 1, .7
+        size_hint: 1, .8
         padding: 20, 20
         GridLayout:
             cols: 1
@@ -117,7 +117,7 @@
                     row_force_default: True
     GridLayout:
         size_hint: 1, .1
-        pos_hint: {"top": .3, "left": 0.8}
+        pos_hint: {"top": .2, "left": 0.8}
         cols: 2
         spacing: 10, 10
         padding: 20, 5
@@ -147,15 +147,9 @@
                 ManageTemperatureFridgeScreen().get_data_temperature_fridge_on_click()
 
     GridLayout:
-        cols: 2
+        cols: 1
         size_hint: 1, .1
-        pos_hint: {"top": .15, "left": 1}
-        GridLayout:
-            cols: 1
-            ImageButton:
-                source: "icons/back.png"
-                on_release:
-                    app.change_screen("home_screen", direction='right')
+        pos_hint: {"top": .1, "left": 1}
         GridLayout:
             cols: 1
             Label:

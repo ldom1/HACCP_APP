@@ -6,14 +6,14 @@ from kivy.uix.button import ButtonBehavior
 from kivy.uix.image import Image
 from kivy import utils
 
-from HaccpApp.haccpApp.src.pyScripts.categorie import ManageCategories
-from HaccpApp.haccpApp.src.pyScripts.collaborateur import ManageCollaborateurs
-from HaccpApp.haccpApp.src.pyScripts.element_refrigerant import ManageElementRefrigerant
-from HaccpApp.haccpApp.src.pyScripts.etiquette import ManageEtiquette
-from HaccpApp.haccpApp.src.pyScripts.fournisseur import ManageFournisseurs
-from HaccpApp.haccpApp.src.pyScripts.friteuse import ManageFriteuse
-from HaccpApp.haccpApp.src.pyScripts.lieu import ManageLieu
-from HaccpApp.haccpApp.src.pyScripts.plan_nettoyage import ManagePlanNettoyage
+from HaccpApp.haccpApp.src.pyScripts.settings_categorie import ManageCategories
+from HaccpApp.haccpApp.src.pyScripts.settings_collaborateur import ManageCollaborateurs
+from HaccpApp.haccpApp.src.pyScripts.settings_element_refrigerant import ManageElementRefrigerant
+from HaccpApp.haccpApp.src.pyScripts.settings_etiquette import ManageEtiquette
+from HaccpApp.haccpApp.src.pyScripts.settings_fournisseur import ManageFournisseurs
+from HaccpApp.haccpApp.src.pyScripts.settings_friteuse import ManageFriteuse
+from HaccpApp.haccpApp.src.pyScripts.settings_lieu import ManageLieu
+from HaccpApp.haccpApp.src.pyScripts.settings_plan_nettoyage import ManagePlanNettoyage
 from HaccpApp.haccpApp.src.pyScripts.temperature_frigidaire import ManageTemperatureFridgeScreen
 
 

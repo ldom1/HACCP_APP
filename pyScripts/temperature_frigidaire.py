@@ -59,3 +59,4 @@ class ManageTemperatureFridgeScreen:
     def clear_temperature_fridge_screen(self):
         clean_widget(self.app, "temperature_frigo_screen", "temp_frigo_selection_element_grid")
         clean_widget(self.app, "temperature_frigo_screen", "temp_frigo_selection_collaborateur_grid")
+        self.temperature_fridge_data['label_temp_fridge'].text = "3 °C"
