@@ -63,7 +63,7 @@ class ManageLieu:
                 self.settings_plan_net_lieu_data["settings_lieu_screen_banner"].add_widget(
                     settings_lieu_banner)
         except Exception as e:
-            print('Settings Plan nettoyage lieu banner:', e)
+            print('Settings Lieu banner:', e)
 
     def load_lieu(self):
         print('to do')

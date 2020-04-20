@@ -93,11 +93,10 @@
                     color: utils.get_color_from_hex("#0062D1")
                     markup: True
                     on_press:
-                        print('press')
                         self.text = "[b]Friteuses[/b]"
                     on_release:
-                        print('Friteuses')
                         self.text = "Friteuses"
+                        app.change_screen("settings_friteuse_screen", "left")
                 LabelButton:
                     id: btn_settings_etiquettes
                     canvas:
@@ -200,7 +199,6 @@
                             on_release:
                                 app.change_screen("settings_screen", direction="right")
                         LabelButton:
-                            id: btn_settings_collaborateurs_valider
                             canvas.before:
                                 Color:
                                     rgb: utils.get_color_from_hex("#3CAE70") if self.state == 'normal' else utils.get_color_from_hex("#00B050")

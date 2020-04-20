@@ -24,50 +24,70 @@ class ImageButton(ButtonBehavior, Image):
     pass
 
 
-class ManagePlanNettoyage:
+class ManageFriteuse:
 
     def __init__(self):
         self.app = App.get_running_app()
-        self.settings = self.app.root.ids["settings_plan_nettoyage_screen"]
-        self.settings_data = self.settings.ids
-        self.base_url = "https://haccpapp-40c63.firebaseio.com/test_user/settings/plan_nettoyage_element"
+        self.settings_banner = self.app.root.ids['settings_friteuse_screen']
+        self.settings_data = self.settings_banner.ids
+        self.base_url = "https://haccpapp-40c63.firebaseio.com/test_user/settings/friteuses"
+
+    def load_friteuse_settings(self):
+        self.settings_data["settings_friteuse_screen_banner"].clear_widgets()
+        try:
+            response_list = self.query_firebase_get_data()
+            for response in response_list:
+                settings_element_refrigerant_banner = FriteuseBannerSettings(nom=response['nom'],
+                                                                             id=response['id'])
+                self.settings_data["settings_friteuse_screen_banner"].add_widget(
+                    settings_element_refrigerant_banner)
+        except Exception as e:
+            print('Settings friteuse banner:', e)
+
+    def load_friteuse(self):
+        self.app.root.ids["temperature_frigo_screen"].ids["temp_frigo_selection_element_grid"].clear_widgets()
+        # Temp Frigo
+        try:
+            element_list = self.query_firebase_get_data()
+        except Exception as e:
+            print(e)
+            return
+        for element in element_list:
+            try:
+                settings_collaborateur_banner = FriteuseBanner(nom=element['nom'])
+                self.app.root.ids["temperature_frigo_screen"].ids["temp_frigo_selection_element_grid"].add_widget(
+                    settings_collaborateur_banner)
+            except Exception as e:
+                print('Friteuse banner:', e)
 
     def get_data_settings(self):
-        nom = self.settings_data['settings_plan_nettoyage_nom'].text
+        nom_element = self.settings_data['settings_friteuse_nom'].text
 
-        if nom == "":
-            self.settings_data['settings_plan_nettoyage_nom'].background_color = utils.get_color_from_hex(
+        if nom_element == "":
+            self.settings_data['settings_friteuse_nom'].background_color = utils.get_color_from_hex(
                 "#C04A4A")
             return
         else:
-            self.settings_data['settings_plan_nettoyage_nom'].background_color = [1, 1, 1, 1]
+            self.settings_data['settings_friteuse_nom'].background_color = [1, 1, 1, 1]
 
-        self.query_firebase_add_data(nom=nom)
-        self.settings_data['settings_plan_nettoyage_nom'].text = ""
-        self.load_plan_nettoyage_settings()
-        self.load_plan_nettoyage()
+        self.query_firebase_add_data(nom_element)
+        self.settings_data['settings_friteuse_nom'].text = ""
+        self.load_friteuse_settings()
+        self.load_friteuse()
 
     def delete_data(self, *args):
         id = args[0]
         self.query_firebase_delete_data(id)
-        self.load_plan_nettoyage_settings()
-        self.load_plan_nettoyage()
+        self.load_friteuse_settings()
+        self.load_friteuse()
 
-    def load_plan_nettoyage_settings(self):
-        self.settings_data["settings_plan_nettoyage_screen_banner"].clear_widgets()
-        try:
-            response_list = self.query_firebase_get_data()
-            for response in response_list:
-                settings_plan_nettoyage_element_banner = PlanNettoyageBannerSettings(
-                    nom=response['nom'],
-                    id=response['id'])
-                self.settings_data["settings_plan_nettoyage_screen_banner"].add_widget(
-                    settings_plan_nettoyage_element_banner)
-        except Exception as e:
-            print('Settings Plan nettoyage banner:', e)
+    def query_firebase_add_data(self, nom):
+        data = {'date': datetime.datetime.today().strftime("%d/%m/%Y %H:%M"),
+                'nom': format_text(nom), 'id': str(uuid.uuid4())}
 
-    def load_plan_nettoyage(self):
-        print('to do')
+        url = self.base_url + ".json"
+
+        requests.post(url, data=json.dumps(data))
 
     def query_firebase_get_data(self):
         url = self.base_url + ".json"
@@ -86,20 +106,12 @@ class ManagePlanNettoyage:
         response = requests.delete(url=url)
         return json.dumps(response.content.decode())
 
-    def query_firebase_add_data(self, nom):
-        data = {'date': datetime.datetime.today().strftime("%d/%m/%Y %H:%M"),
-                'nom': format_text(nom), 'id': str(uuid.uuid4())}
 
-        url = self.base_url + ".json"
-
-        requests.post(url, data=json.dumps(data))
-
-
-class PlanNettoyageBanner(GridLayout):
+class FriteuseBanner(GridLayout):
     rows = 1
 
     def __init__(self, **kwargs):
-        super(PlanNettoyageBanner, self).__init__()
+        super(FriteuseBanner, self).__init__()
 
         self.app = App.get_running_app()
 
@@ -125,20 +137,18 @@ class PlanNettoyageBanner(GridLayout):
         self.rect.size = self.size
 
     def select_element(self, *args):
-        clean_widget(app=self.app, screen_id="temperature_frigo_screen",
-                     widget_id="temp_frigo_selection_collaborateur_grid")
+        clean_widget(app=self.app, screen_id="temperature_frigo_screen", widget_id="temp_frigo_selection_element_grid")
         running_app = args[0]
         widget = args[1]
         widget.color = utils.get_color_from_hex("#35477d")
-        running_app.collaborateur_choice = widget.text
+        running_app.element_choice = widget.text
 
 
-class PlanNettoyageBannerSettings(GridLayout):
+class FriteuseBannerSettings(GridLayout):
     rows = 1
 
     def __init__(self, **kwargs):
-        app = App.get_running_app()
-        super(PlanNettoyageBannerSettings, self).__init__()
+        super(FriteuseBannerSettings, self).__init__()
 
         self.nom = kwargs.pop('nom')
         self.id = kwargs.pop('id')
@@ -158,8 +168,7 @@ class PlanNettoyageBannerSettings(GridLayout):
         # right floatlayout - Bouton delete
         right_fl = FloatLayout()
         right_fl_delete = ImageButton(source="icons/delete.png", size_hint=(.4, .4), pos_hint={"top": .7, "right": 1},
-                                      on_release=partial(ManagePlanNettoyage().delete_data,
-                                                         self.id))
+                                      on_release=partial(ManageFriteuse().delete_data, self.id))
         right_fl.add_widget(right_fl_delete)
 
         self.add_widget(left_fl)

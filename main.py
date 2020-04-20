@@ -10,6 +10,7 @@ from HaccpApp.haccpApp.src.pyScripts.categories import ManageCategories
 from HaccpApp.haccpApp.src.pyScripts.collaborateurs import ManageCollaborateurs
 from HaccpApp.haccpApp.src.pyScripts.elements_refrigerants import ManageElementRefrigerant
 from HaccpApp.haccpApp.src.pyScripts.fournisseurs import ManageFournisseurs
+from HaccpApp.haccpApp.src.pyScripts.friteuse import ManageFriteuse
 from HaccpApp.haccpApp.src.pyScripts.lieu import ManageLieu
 from HaccpApp.haccpApp.src.pyScripts.plan_nettoyage import ManagePlanNettoyage
 from HaccpApp.haccpApp.src.pyScripts.temperature_fridge_script import ManageTemperatureFridgeScreen
@@ -40,6 +41,10 @@ class SettingsPlanNettoyageScreen(Screen):
 
 
 class SettingsFournisseursScreen(Screen):
+    pass
+
+
+class SettingsFriteuseScreen(Screen):
     pass
 
 
@@ -76,6 +81,9 @@ class MainApp(App):
 
         # ManageCategories().load_()
         ManageCategories().load_fournisseur_settings()
+
+        # ManageFriteuse().load_()
+        ManageFriteuse().load_friteuse_settings()
 
     def change_screen(self, screen_name, direction):
         # Clean selected screen
