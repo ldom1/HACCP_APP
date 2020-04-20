@@ -121,12 +121,11 @@ class CategorieBanner(GridLayout):
         self.rect.size = self.size
 
     def select_element(self, *args):
-        clean_widget(app=self.app, screen_id="temperature_frigo_screen",
-                     widget_id="temp_frigo_selection_collaborateur_grid")
         running_app = args[0]
         widget = args[1]
+        clean_widget(widget)
         widget.color = utils.get_color_from_hex("#35477d")
-        running_app.collaborateur_choice = widget.text
+        running_app.categorie_choice = widget.text
 
 
 class CategorieBannerSettings(GridLayout):

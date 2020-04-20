@@ -45,20 +45,25 @@ class ManageElementRefrigerant:
             print('Settings elements refrigerants banner:', e)
 
     def load_operations(self):
-        self.app.root.ids["temperature_frigo_screen"].ids["temp_frigo_selection_element_grid"].clear_widgets()
-        # Temp Frigo
+        widget_dict = [
+            self.app.root.ids["operations_temperature_frigo_screen"].ids["temp_frigo_selection_element_grid"]]
+        for widget in widget_dict:
+            self.load_operations_one_banner(widget=widget)
+
+    def load_operations_one_banner(self, widget):
+        widget.clear_widgets()
         try:
-            element_list = self.query_firebase_get_data()
+            response_list = self.query_firebase_get_data()
         except Exception as e:
             print(e)
             return
-        for element in element_list:
+        for response in response_list:
             try:
-                settings_collaborateur_banner = ElementRefrigerantBanner(nom=element['nom'])
-                self.app.root.ids["temperature_frigo_screen"].ids["temp_frigo_selection_element_grid"].add_widget(
-                    settings_collaborateur_banner)
+                element_banner = ElementRefrigerantBanner(nom=response['nom'],
+                                                          banner=widget)
+                widget.add_widget(element_banner)
             except Exception as e:
-                print('Element Temp Frigo banner:', e)
+                print('Element Temp Frigo banner:', e, 'in', widget)
 
     def get_data_settings(self):
         nom_element = self.settings_data['settings_element_refrigerant_nom'].text
@@ -116,6 +121,7 @@ class ElementRefrigerantBanner(GridLayout):
         self.app = App.get_running_app()
 
         self.nom = kwargs.pop('nom')
+        self.banner = kwargs.pop('banner')
 
         with self.canvas.before:
             Color(rgba=(utils.get_color_from_hex("#0062D1")))
@@ -126,7 +132,7 @@ class ElementRefrigerantBanner(GridLayout):
         left_fl = FloatLayout()
         left_fl_title = LabelButton(text=self.nom, size_hint=(1, 1), pos_hint={"top": 1, "right": 1},
                                     color=utils.get_color_from_hex("#ffffff"),
-                                    on_release=partial(self.select_element, self.app))
+                                    on_release=partial(self.select_element, self.banner))
 
         left_fl.add_widget(left_fl_title)
 
@@ -137,11 +143,11 @@ class ElementRefrigerantBanner(GridLayout):
         self.rect.size = self.size
 
     def select_element(self, *args):
-        clean_widget(app=self.app, screen_id="temperature_frigo_screen", widget_id="temp_frigo_selection_element_grid")
-        running_app = args[0]
+        banner = args[0]
+        clean_widget(banner)
         widget = args[1]
         widget.color = utils.get_color_from_hex("#35477d")
-        running_app.element_choice = widget.text
+        self.app.element_refrigerant_choice = widget.text
 
 
 class ElementRefrigerantBannerSettings(GridLayout):

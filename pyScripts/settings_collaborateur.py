@@ -75,8 +75,14 @@ class ManageCollaborateurs:
             print('Settings collaborateurs banner:', e)
 
     def load_operations(self):
-        self.app.root.ids["temperature_frigo_screen"].ids["temp_frigo_selection_collaborateur_grid"].clear_widgets()
-        # Temp Frigo
+        widget_dict = [
+            self.app.root.ids["operations_temperature_frigo_screen"].ids["temp_frigo_selection_collaborateur_grid"],
+            self.app.root.ids["operations_plan_nettoyage_screen"].ids["plan_nettoyage_selection_collaborateur_grid"]]
+        for widget in widget_dict:
+            self.load_operations_one_banner(widget=widget)
+
+    def load_operations_one_banner(self, widget):
+        widget.clear_widgets()
         try:
             response_list = self.query_firebase_get_data()
         except Exception as e:
@@ -85,11 +91,11 @@ class ManageCollaborateurs:
         for response in response_list:
             try:
                 collaborateur_banner = CollaborateursBanner(prenom=response['prenom'],
-                                                            nom=response['nom'])
-                self.app.root.ids["temperature_frigo_screen"].ids["temp_frigo_selection_collaborateur_grid"].add_widget(
-                    collaborateur_banner)
+                                                            nom=response['nom'],
+                                                            banner=widget)
+                widget.add_widget(collaborateur_banner)
             except Exception as e:
-                print('Collaborateurs Temp Frigo banner:', e)
+                print('Collaborateurs banner:', e, 'in', widget)
 
     def query_firebase_get_data(self):
         url = self.base_url + ".json"
@@ -127,6 +133,7 @@ class CollaborateursBanner(GridLayout):
         self.app = App.get_running_app()
 
         self.nom = kwargs.pop('prenom') + " " + kwargs.pop('nom')
+        self.banner = kwargs.pop('banner')
 
         with self.canvas.before:
             Color(rgba=(utils.get_color_from_hex("#0062D1")))
@@ -137,7 +144,7 @@ class CollaborateursBanner(GridLayout):
         left_fl = FloatLayout()
         left_fl_title = LabelButton(text=self.nom, size_hint=(1, 1), pos_hint={"top": 1, "right": 1},
                                     color=utils.get_color_from_hex("#ffffff"),
-                                    on_release=partial(self.select_element, self.app))
+                                    on_release=partial(self.select_element, self.banner))
 
         left_fl.add_widget(left_fl_title)
 
@@ -148,12 +155,11 @@ class CollaborateursBanner(GridLayout):
         self.rect.size = self.size
 
     def select_element(self, *args):
-        clean_widget(app=self.app, screen_id="temperature_frigo_screen",
-                     widget_id="temp_frigo_selection_collaborateur_grid")
-        running_app = args[0]
         widget = args[1]
+        banner = args[0]
+        clean_widget(widget=banner)
         widget.color = utils.get_color_from_hex("#35477d")
-        running_app.collaborateur_choice = widget.text
+        self.app.collaborateur_choice = widget.text
 
 
 class CollaborateursBannerSettings(GridLayout):

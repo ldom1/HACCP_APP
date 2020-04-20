@@ -4,7 +4,6 @@ from kivy.lang import Builder
 from kivy.uix.screenmanager import Screen
 from kivy.uix.button import ButtonBehavior
 from kivy.uix.image import Image
-from kivy import utils
 
 from HaccpApp.haccpApp.src.pyScripts.settings_categorie import ManageCategories
 from HaccpApp.haccpApp.src.pyScripts.settings_collaborateur import ManageCollaborateurs
@@ -14,7 +13,7 @@ from HaccpApp.haccpApp.src.pyScripts.settings_fournisseur import ManageFournisse
 from HaccpApp.haccpApp.src.pyScripts.settings_friteuse import ManageFriteuse
 from HaccpApp.haccpApp.src.pyScripts.settings_lieu import ManageLieu
 from HaccpApp.haccpApp.src.pyScripts.settings_plan_nettoyage import ManagePlanNettoyage
-from HaccpApp.haccpApp.src.pyScripts.temperature_frigidaire import ManageTemperatureFridgeScreen
+from HaccpApp.haccpApp.src.pyScripts.operations_temperature_frigidaire import ManageTemperatureFridgeScreen
 
 
 class HomeScreen(Screen):
@@ -22,6 +21,10 @@ class HomeScreen(Screen):
 
 
 class TemperatureFrigoScreen(Screen):
+    pass
+
+
+class PlanNettoyageScreen(Screen):
     pass
 
 
@@ -75,10 +78,10 @@ class MainApp(App):
         ManageElementRefrigerant().load_operations()
         ManageElementRefrigerant().load_settings()
 
-        # ManageLieu().load_()
+        ManageLieu().load_operations()
         ManageLieu().load_settings()
 
-        # ManagePlanNettoyage().load_()
+        ManagePlanNettoyage().load_operations()
         ManagePlanNettoyage().load_settings()
 
         # ManageFournisseurs().load_()
@@ -95,7 +98,7 @@ class MainApp(App):
 
     def change_screen(self, screen_name, direction):
         # Clean selected screen
-        if screen_name == "temperature_frigo_screen":
+        if screen_name == "operations_temperature_frigo_screen":
             ManageTemperatureFridgeScreen().clear_temperature_fridge_screen()
         # Get the screen manager from kv file
         screen_manager = self.root.ids['screen_manager']

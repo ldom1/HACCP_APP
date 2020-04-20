@@ -1,6 +1,6 @@
-#:import ManageTemperatureFridgeScreen HaccpApp.haccpApp.src.pyScripts.temperature_frigidaire.ManageTemperatureFridgeScreen
+#:import ManagePlanNettoyageScreen HaccpApp.haccpApp.src.pyScripts.operations_plan_nettoyage.ManagePlanNettoyageScreen
 
-<TemperatureFrigoScreen>:
+<PlanNettoyageScreen>:
     GridLayout:
         cols: 3
         pos_hint: {"top": 1, "left": 1}
@@ -24,14 +24,15 @@
                         pos_hint: {"top": 1, "left": 0.3}
                         color: utils.get_color_from_hex("#000000")
                         size_hint: 0.1, 0.1
-                        text: "Sélection de l'élément"
+                        text: "Sélection du lieu"
             ScrollView:
                 pos_hint: {"top": .8, "left": 1}
                 size_hint: 1, .7
                 GridLayout:
                     # Banner grid
-                    id: temp_frigo_selection_element_grid
+                    id: plan_nettoyage_selection_lieu_grid
                     cols: 1
+                    padding: 10, 10
                     spacing: 20,20
                     size_hint_y: None
                     height: self.minimum_height
@@ -56,32 +57,21 @@
                         pos_hint: {"top": 1, "left": 0.3}
                         color: utils.get_color_from_hex("#000000")
                         size_hint: 0.1, 0.1
-                        text: "Relever la température"
+                        text: "Sélection de l'élément nettoyé"
             ScrollView:
                 pos_hint: {"top": .8, "left": 1}
                 size_hint: 1, .7
                 GridLayout:
-                    pos_hint: {"top": 1, "left": 1}
-                    size_hint: 1, 0.3
-                    rows: 2
-                    Label:
-                        id: label_temp_fridge
-                        size_hint: .1, .2
-                        pos_hint: {"top": 1, "left": 0.3}
-                        color: utils.get_color_from_hex("#000000")
-                        text: "3 °C"
-                    GridLayout:
-                        cols: 2
-                        size_hint: .05, .2
-                        pos_hint: {"top": 0.8, "left": 1}
-                        ImageButton:
-                            source: "icons/logo_moins.png"
-                            on_press:
-                                ManageTemperatureFridgeScreen().modify_temperature_fridge_on_click('sub')
-                        ImageButton:
-                            source: "icons/logo_plus.png"
-                            on_press:
-                                ManageTemperatureFridgeScreen().modify_temperature_fridge_on_click('add')
+                    # Banner grid
+                    id: plan_nettoyage_selection_plan_nettoyage
+                    cols: 1
+                    spacing: 20,20
+                    padding: 10, 10
+                    size_hint_y: None
+                    height: self.minimum_height
+                    width: self.minimum_width
+                    row_default_height: '85dp'
+                    row_force_default: True
 
         GridLayout:
             cols: 1
@@ -101,15 +91,16 @@
                         pos_hint: {"top": 1, "left": 0.3}
                         color: utils.get_color_from_hex("#000000")
                         size_hint: 0.1, 0.1
-                        text: "Sélection collaborateur"
+                        text: "Sélection du collaborateur"
             ScrollView:
                 pos_hint: {"top": .8, "left": 1}
                 size_hint: 1, .7
                 GridLayout:
                     # Banner grid
-                    id: temp_frigo_selection_collaborateur_grid
+                    id: plan_nettoyage_selection_collaborateur_grid
                     cols: 1
                     spacing: 20,20
+                    padding: 10, 10
                     size_hint_y: None
                     height: self.minimum_height
                     width: self.minimum_width
@@ -144,7 +135,7 @@
             text: "[u]Valider[/u]"
             markup: True
             on_release:
-                ManageTemperatureFridgeScreen().get_data_temperature_fridge_on_click()
+                ManagePlanNettoyageScreen().get_data()
 
     GridLayout:
         cols: 1
@@ -154,6 +145,6 @@
             cols: 1
             Label:
                 text: ""
-                id: temp_fridge_warning
+                id: plan_nettoyage_warning
                 color: utils.get_color_from_hex("#C00000")
 

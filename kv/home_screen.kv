@@ -28,7 +28,7 @@
                     pos_hint: {"top": 1, "left": 1}
                     size_hint: 0.3, 0.5
                     on_release:
-                        app.change_screen("temperature_frigo_screen", "left")
+                        app.change_screen("operations_temperature_frigo_screen", "left")
                 Label:
                     pos_hint: {"top": 0.1, "left": 1}
                     color: utils.get_color_from_hex("#000000")
@@ -42,7 +42,7 @@
                     pos_hint: {"top": 1, "left": 1}
                     size_hint: 0.3, 0.5
                     on_release:
-                        print("plan de nettoyage")
+                        app.change_screen("operations_plan_nettoyage_screen", "left")
                 Label:
                     pos_hint: {"top": 0.1, "left": 1}
                     color: utils.get_color_from_hex("#000000")

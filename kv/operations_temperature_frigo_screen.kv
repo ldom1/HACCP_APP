@@ -1,0 +1,161 @@
+#:import ManageTemperatureFridgeScreen HaccpApp.haccpApp.src.pyScripts.operations_temperature_frigidaire.ManageTemperatureFridgeScreen
+
+<TemperatureFrigoScreen>:
+    GridLayout:
+        cols: 3
+        pos_hint: {"top": 1, "left": 1}
+        size_hint: 1, .8
+        padding: 20, 20
+        GridLayout:
+            cols: 1
+            GridLayout:
+                cols: 2
+                pos_hint: {"top": 1, "left": 1}
+                size_hint: 1, 0.2
+                GridLayout:
+                    cols: 1
+                    pos_hint: {"top": 1, "left": 1}
+                    size_hint: 0.2, 0.2
+                    Image:
+                        source: "icons/numbers/nb_1.png"
+                GridLayout:
+                    cols: 1
+                    Label:
+                        pos_hint: {"top": 1, "left": 0.3}
+                        color: utils.get_color_from_hex("#000000")
+                        size_hint: 0.1, 0.1
+                        text: "Sélection de l'élément"
+            ScrollView:
+                pos_hint: {"top": .8, "left": 1}
+                size_hint: 1, .7
+                GridLayout:
+                    # Banner grid
+                    id: temp_frigo_selection_element_grid
+                    cols: 1
+                    spacing: 20,20
+                    padding: 10, 10
+                    size_hint_y: None
+                    height: self.minimum_height
+                    width: self.minimum_width
+                    row_default_height: '85dp'
+                    row_force_default: True
+        GridLayout:
+            cols: 1
+            GridLayout:
+                cols: 2
+                pos_hint: {"top": 1, "left": 1}
+                size_hint: 1, 0.2
+                GridLayout:
+                    cols: 1
+                    pos_hint: {"top": 1, "left": 1}
+                    size_hint: 0.2, 0.2
+                    Image:
+                        source: "icons/numbers/nb_2.png"
+                GridLayout:
+                    cols: 1
+                    Label:
+                        pos_hint: {"top": 1, "left": 0.3}
+                        color: utils.get_color_from_hex("#000000")
+                        size_hint: 0.1, 0.1
+                        text: "Relever la température"
+            ScrollView:
+                pos_hint: {"top": .8, "left": 1}
+                size_hint: 1, .7
+                GridLayout:
+                    pos_hint: {"top": 1, "left": 1}
+                    size_hint: 1, 0.3
+                    rows: 2
+                    Label:
+                        id: label_temp_fridge
+                        size_hint: .1, .2
+                        pos_hint: {"top": 1, "left": 0.3}
+                        color: utils.get_color_from_hex("#000000")
+                        text: "3 °C"
+                    GridLayout:
+                        cols: 2
+                        size_hint: .05, .2
+                        pos_hint: {"top": 0.8, "left": 1}
+                        ImageButton:
+                            source: "icons/logo_moins.png"
+                            on_press:
+                                ManageTemperatureFridgeScreen().modify_temperature_fridge_on_click('sub')
+                        ImageButton:
+                            source: "icons/logo_plus.png"
+                            on_press:
+                                ManageTemperatureFridgeScreen().modify_temperature_fridge_on_click('add')
+
+        GridLayout:
+            cols: 1
+            GridLayout:
+                cols: 2
+                pos_hint: {"top": 1, "left": 1}
+                size_hint: 1, 0.2
+                GridLayout:
+                    cols: 1
+                    pos_hint: {"top": 1, "left": 1}
+                    size_hint: 0.2, 0.2
+                    Image:
+                        source: "icons/numbers/nb_3.png"
+                GridLayout:
+                    cols: 1
+                    Label:
+                        pos_hint: {"top": 1, "left": 0.3}
+                        color: utils.get_color_from_hex("#000000")
+                        size_hint: 0.1, 0.1
+                        text: "Sélection du collaborateur"
+            ScrollView:
+                pos_hint: {"top": .8, "left": 1}
+                size_hint: 1, .7
+                GridLayout:
+                    # Banner grid
+                    id: temp_frigo_selection_collaborateur_grid
+                    cols: 1
+                    spacing: 20,20
+                    padding: 10, 10
+                    size_hint_y: None
+                    height: self.minimum_height
+                    width: self.minimum_width
+                    row_default_height: '85dp'
+                    row_force_default: True
+    GridLayout:
+        size_hint: 1, .1
+        pos_hint: {"top": .2, "left": 0.8}
+        cols: 2
+        spacing: 10, 10
+        padding: 20, 5
+        LabelButton:
+            id: btn_temp_fridge_cancel
+            canvas.before:
+                Color:
+                    rgb: utils.get_color_from_hex("#C04A4A") if self.state == 'normal' else utils.get_color_from_hex("#C00000")
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+            text: "[u]Annuler[/u]"
+            markup: True
+            on_release:
+                app.change_screen("home_screen", direction="right")
+        LabelButton:
+            id: btn_temp_fridge_valider
+            canvas.before:
+                Color:
+                    rgb: utils.get_color_from_hex("#3CAE70") if self.state == 'normal' else utils.get_color_from_hex("#00B050")
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+            text: "[u]Valider[/u]"
+            markup: True
+            on_release:
+                ManageTemperatureFridgeScreen().get_data()
+
+    GridLayout:
+        cols: 1
+        size_hint: 1, .1
+        pos_hint: {"top": .1, "left": 1}
+        GridLayout:
+            cols: 1
+            Label:
+                text: ""
+                id: temp_fridge_warning
+                color: utils.get_color_from_hex("#C00000")
+

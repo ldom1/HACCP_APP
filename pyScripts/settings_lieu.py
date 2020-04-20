@@ -66,7 +66,20 @@ class ManageLieu:
             print('Settings Lieu banner:', e)
 
     def load_operations(self):
-        print('to do')
+        self.app.root.ids["operations_plan_nettoyage_screen"].ids["plan_nettoyage_selection_lieu_grid"].clear_widgets()
+        # Temp Frigo
+        try:
+            response_list = self.query_firebase_get_data()
+        except Exception as e:
+            print(e)
+            return
+        for response in response_list:
+            try:
+                collaborateur_banner = LieuBanner(nom=response['nom'])
+                self.app.root.ids["operations_plan_nettoyage_screen"].ids["plan_nettoyage_selection_lieu_grid"].add_widget(
+                    collaborateur_banner)
+            except Exception as e:
+                print('Lieu Plan Nettoyage banner:', e)
 
     def query_firebase_get_data(self):
         url = self.base_url + ".json"
@@ -102,7 +115,7 @@ class LieuBanner(GridLayout):
 
         self.app = App.get_running_app()
 
-        self.nom = kwargs.pop('prenom') + " " + kwargs.pop('nom')
+        self.nom = kwargs.pop('nom')
 
         with self.canvas.before:
             Color(rgba=(utils.get_color_from_hex("#0062D1")))
@@ -124,12 +137,11 @@ class LieuBanner(GridLayout):
         self.rect.size = self.size
 
     def select_element(self, *args):
-        clean_widget(app=self.app, screen_id="temperature_frigo_screen",
-                     widget_id="temp_frigo_selection_collaborateur_grid")
         running_app = args[0]
         widget = args[1]
+        clean_widget(widget)
         widget.color = utils.get_color_from_hex("#35477d")
-        running_app.collaborateur_choice = widget.text
+        running_app.lieu_choice = widget.text
 
 
 class LieuBannerSettings(GridLayout):

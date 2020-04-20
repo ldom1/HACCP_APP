@@ -67,7 +67,22 @@ class ManagePlanNettoyage:
             print('Settings Plan nettoyage banner:', e)
 
     def load_operations(self):
-        print('to do')
+        self.app.root.ids["operations_plan_nettoyage_screen"].ids[
+            "plan_nettoyage_selection_plan_nettoyage"].clear_widgets()
+        # Temp Frigo
+        try:
+            response_list = self.query_firebase_get_data()
+        except Exception as e:
+            print(e)
+            return
+        for response in response_list:
+            try:
+                collaborateur_banner = PlanNettoyageBanner(nom=response['nom'])
+                self.app.root.ids["operations_plan_nettoyage_screen"].ids[
+                    "plan_nettoyage_selection_plan_nettoyage"].add_widget(
+                    collaborateur_banner)
+            except Exception as e:
+                print('Plan nettoyage Plan Nettoyage banner:', e)
 
     def query_firebase_get_data(self):
         url = self.base_url + ".json"
@@ -125,12 +140,11 @@ class PlanNettoyageBanner(GridLayout):
         self.rect.size = self.size
 
     def select_element(self, *args):
-        clean_widget(app=self.app, screen_id="temperature_frigo_screen",
-                     widget_id="temp_frigo_selection_collaborateur_grid")
         running_app = args[0]
         widget = args[1]
+        clean_widget(widget)
         widget.color = utils.get_color_from_hex("#35477d")
-        running_app.collaborateur_choice = widget.text
+        running_app.plan_nettoyage_choice = widget.text
 
 
 class PlanNettoyageBannerSettings(GridLayout):

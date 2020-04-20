@@ -8,8 +8,7 @@ def format_text(text):
     return new_text
 
 
-def clean_widget(app, screen_id, widget_id):
-    widget = app.root.ids[screen_id].ids[widget_id]
+def clean_widget(widget):
     for banner in widget.children:
         for float_layout in banner.children:
             for elt in float_layout.children:

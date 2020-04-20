@@ -1,5 +1,5 @@
 #:include kv/home_screen.kv
-#:include kv/temperature_frigo_screen.kv
+#:include kv/operations_temperature_frigo_screen.kv
 #:include kv/settings_screen.kv
 #:include kv/settings_collaborateurs_screen.kv
 #:include kv/settings_elements_refrigerants_screen.kv
@@ -7,6 +7,7 @@
 #:include kv/settings_fournisseurs_screen.kv
 #:include kv/settings_friteuse_screen.kv
 #:include kv/settings_etiquettes_screen.kv
+#:include kv/operations_plan_nettoyage.kv
 #:import utils kivy.utils
 
 GridLayout:
@@ -64,8 +65,11 @@ GridLayout:
                 name: "home_screen"
                 id: home_screen
             TemperatureFrigoScreen:
-                name: "temperature_frigo_screen"
-                id: temperature_frigo_screen
+                name: "operations_temperature_frigo_screen"
+                id: operations_temperature_frigo_screen
+            PlanNettoyageScreen:
+                name: "operations_plan_nettoyage_screen"
+                id: operations_plan_nettoyage_screen
             SettingsScreen:
                 name: "settings_screen"
                 id: settings_screen
