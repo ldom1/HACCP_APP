@@ -59,15 +59,19 @@ class ManageLieu:
         try:
             response_list = self.query_firebase_get_data()
             for response in response_list:
-                settings_lieu_banner = LieuBannerSettings(nom=response['nom'], id=response['id'])
-                self.settings_plan_net_lieu_data["settings_lieu_screen_banner"].add_widget(
-                    settings_lieu_banner)
+                banner = LieuBannerSettings(nom=response['nom'], id=response['id'])
+                self.settings_plan_net_lieu_data["settings_lieu_screen_banner"].add_widget(banner)
         except Exception as e:
             print('Settings Lieu banner:', e)
 
     def load_operations(self):
-        self.app.root.ids["operations_plan_nettoyage_screen"].ids["plan_nettoyage_selection_lieu_grid"].clear_widgets()
-        # Temp Frigo
+        widget_dict = [
+            self.app.root.ids["operations_plan_nettoyage_screen"].ids["plan_nettoyage_selection_lieu_grid"]]
+        for widget in widget_dict:
+            self.load_operations_one_banner(widget=widget)
+
+    def load_operations_one_banner(self, widget):
+        widget.clear_widgets()
         try:
             response_list = self.query_firebase_get_data()
         except Exception as e:
@@ -75,11 +79,10 @@ class ManageLieu:
             return
         for response in response_list:
             try:
-                collaborateur_banner = LieuBanner(nom=response['nom'])
-                self.app.root.ids["operations_plan_nettoyage_screen"].ids["plan_nettoyage_selection_lieu_grid"].add_widget(
-                    collaborateur_banner)
+                banner = LieuBanner(nom=response['nom'], banner=widget)
+                widget.add_widget(banner)
             except Exception as e:
-                print('Lieu Plan Nettoyage banner:', e)
+                print('Lieu Plan Nettoyage banner:', e, 'in', widget)
 
     def query_firebase_get_data(self):
         url = self.base_url + ".json"
@@ -116,6 +119,7 @@ class LieuBanner(GridLayout):
         self.app = App.get_running_app()
 
         self.nom = kwargs.pop('nom')
+        self.banner = kwargs.pop('banner')
 
         with self.canvas.before:
             Color(rgba=(utils.get_color_from_hex("#0062D1")))
@@ -126,7 +130,7 @@ class LieuBanner(GridLayout):
         left_fl = FloatLayout()
         left_fl_title = LabelButton(text=self.nom, size_hint=(1, 1), pos_hint={"top": 1, "right": 1},
                                     color=utils.get_color_from_hex("#ffffff"),
-                                    on_release=partial(self.select_element, self.app))
+                                    on_release=partial(self.select_element, self.banner))
 
         left_fl.add_widget(left_fl_title)
 
@@ -137,11 +141,11 @@ class LieuBanner(GridLayout):
         self.rect.size = self.size
 
     def select_element(self, *args):
-        running_app = args[0]
+        banner = args[0]
         widget = args[1]
-        clean_widget(widget)
+        clean_widget(banner)
         widget.color = utils.get_color_from_hex("#35477d")
-        running_app.lieu_choice = widget.text
+        self.app.lieu_choice = widget.text
 
 
 class LieuBannerSettings(GridLayout):

@@ -37,10 +37,9 @@ class ManageFriteuse:
         try:
             response_list = self.query_firebase_get_data()
             for response in response_list:
-                settings_element_refrigerant_banner = FriteuseBannerSettings(nom=response['nom'],
+                banner = FriteuseBannerSettings(nom=response['nom'],
                                                                              id=response['id'])
-                self.settings_data["settings_friteuse_screen_banner"].add_widget(
-                    settings_element_refrigerant_banner)
+                self.settings_data["settings_friteuse_screen_banner"].add_widget(banner)
         except Exception as e:
             print('Settings friteuse banner:', e)
 

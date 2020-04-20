@@ -58,18 +58,19 @@ class ManagePlanNettoyage:
         try:
             response_list = self.query_firebase_get_data()
             for response in response_list:
-                settings_plan_nettoyage_element_banner = PlanNettoyageBannerSettings(
-                    nom=response['nom'],
-                    id=response['id'])
-                self.settings_data["settings_plan_nettoyage_screen_banner"].add_widget(
-                    settings_plan_nettoyage_element_banner)
+                banner = PlanNettoyageBannerSettings(nom=response['nom'], id=response['id'])
+                self.settings_data["settings_plan_nettoyage_screen_banner"].add_widget(banner)
         except Exception as e:
             print('Settings Plan nettoyage banner:', e)
 
     def load_operations(self):
-        self.app.root.ids["operations_plan_nettoyage_screen"].ids[
-            "plan_nettoyage_selection_plan_nettoyage"].clear_widgets()
-        # Temp Frigo
+        widget_list = [
+            self.app.root.ids["operations_plan_nettoyage_screen"].ids["plan_nettoyage_selection_plan_nettoyage"]]
+        for widget in widget_list:
+            self.load_operations_one_banner(widget=widget)
+
+    def load_operations_one_banner(self, widget):
+        widget.clear_widgets()
         try:
             response_list = self.query_firebase_get_data()
         except Exception as e:
@@ -77,12 +78,11 @@ class ManagePlanNettoyage:
             return
         for response in response_list:
             try:
-                collaborateur_banner = PlanNettoyageBanner(nom=response['nom'])
-                self.app.root.ids["operations_plan_nettoyage_screen"].ids[
-                    "plan_nettoyage_selection_plan_nettoyage"].add_widget(
-                    collaborateur_banner)
+                banner = PlanNettoyageBanner(nom=response['nom'],
+                                             banner=widget)
+                widget.add_widget(banner)
             except Exception as e:
-                print('Plan nettoyage Plan Nettoyage banner:', e)
+                print('Plan nettoyage banner:', e, 'in', widget)
 
     def query_firebase_get_data(self):
         url = self.base_url + ".json"
@@ -119,6 +119,7 @@ class PlanNettoyageBanner(GridLayout):
         self.app = App.get_running_app()
 
         self.nom = kwargs.pop('nom')
+        self.banner = kwargs.pop('banner')
 
         with self.canvas.before:
             Color(rgba=(utils.get_color_from_hex("#0062D1")))
@@ -129,7 +130,7 @@ class PlanNettoyageBanner(GridLayout):
         left_fl = FloatLayout()
         left_fl_title = LabelButton(text=self.nom, size_hint=(1, 1), pos_hint={"top": 1, "right": 1},
                                     color=utils.get_color_from_hex("#ffffff"),
-                                    on_release=partial(self.select_element, self.app))
+                                    on_release=partial(self.select_element, self.banner))
 
         left_fl.add_widget(left_fl_title)
 
@@ -140,11 +141,11 @@ class PlanNettoyageBanner(GridLayout):
         self.rect.size = self.size
 
     def select_element(self, *args):
-        running_app = args[0]
+        banner = args[0]
         widget = args[1]
-        clean_widget(widget)
+        clean_widget(banner)
         widget.color = utils.get_color_from_hex("#35477d")
-        running_app.plan_nettoyage_choice = widget.text
+        self.app.plan_nettoyage_choice = widget.text
 
 
 class PlanNettoyageBannerSettings(GridLayout):

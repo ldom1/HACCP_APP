@@ -57,8 +57,8 @@ class ManageCategories:
         try:
             response_list = self.query_firebase_get_data()
             for response in response_list:
-                settings_banner = CategorieBannerSettings(nom=response['nom'], id=response['id'])
-                self.settings_data["settings_categorie_banner"].add_widget(settings_banner)
+                banner = CategorieBannerSettings(nom=response['nom'], id=response['id'])
+                self.settings_data["settings_categorie_banner"].add_widget(banner)
         except Exception as e:
             print('Settings categories banner:', e)
 

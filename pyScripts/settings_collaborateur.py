@@ -67,10 +67,10 @@ class ManageCollaborateurs:
         try:
             response_list = self.query_firebase_get_data()
             for response in response_list:
-                settings_collaborateur_banner = CollaborateursBannerSettings(prenom=response['prenom'],
-                                                                             nom=response['nom'],
-                                                                             id=response['id'])
-                self.settings_data["settings_collaborateurs_screen_banner"].add_widget(settings_collaborateur_banner)
+                banner = CollaborateursBannerSettings(prenom=response['prenom'],
+                                                      nom=response['nom'],
+                                                      id=response['id'])
+                self.settings_data["settings_collaborateurs_screen_banner"].add_widget(banner)
         except Exception as e:
             print('Settings collaborateurs banner:', e)
 
@@ -90,10 +90,10 @@ class ManageCollaborateurs:
             return
         for response in response_list:
             try:
-                collaborateur_banner = CollaborateursBanner(prenom=response['prenom'],
-                                                            nom=response['nom'],
-                                                            banner=widget)
-                widget.add_widget(collaborateur_banner)
+                banner = CollaborateursBanner(prenom=response['prenom'],
+                                              nom=response['nom'],
+                                              banner=widget)
+                widget.add_widget(banner)
             except Exception as e:
                 print('Collaborateurs banner:', e, 'in', widget)
 

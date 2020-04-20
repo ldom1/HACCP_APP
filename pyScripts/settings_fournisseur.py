@@ -57,8 +57,8 @@ class ManageFournisseurs:
         try:
             response_list = self.query_firebase_get_data()
             for response in response_list:
-                settings_banner = FournisseurBannerSettings(nom=response['nom'], id=response['id'])
-                self.settings_data["settings_fournisseurs_banner"].add_widget(settings_banner)
+                banner = FournisseurBannerSettings(nom=response['nom'], id=response['id'])
+                self.settings_data["settings_fournisseurs_banner"].add_widget(banner)
         except Exception as e:
             print('Settings fournisseurs banner:', e)
 

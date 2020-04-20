@@ -37,10 +37,8 @@ class ManageEtiquette:
         try:
             response_list = self.query_firebase_get_data()
             for response in response_list:
-                settings_element_refrigerant_banner = EtiquetteBannerSettings(nom=response['nom'],
-                                                                              id=response['id'])
-                self.settings_data["settings_etiquette_screen_banner"].add_widget(
-                    settings_element_refrigerant_banner)
+                banner = EtiquetteBannerSettings(nom=response['nom'], id=response['id'])
+                self.settings_data["settings_etiquette_screen_banner"].add_widget(banner)
         except Exception as e:
             print('Settings etiquette banner:', e)
 
