@@ -36,8 +36,7 @@ class ManageEtiquette:
     def load_settings(self):
         self.settings_data["settings_etiquette_screen_banner"].clear_widgets()
         try:
-            response_list = self.data_firebase
-            for response in response_list:
+            for response in self.data_firebase:
                 banner = EtiquetteBannerSettings(nom=response['nom'], id=response['id'])
                 self.settings_data["settings_etiquette_screen_banner"].add_widget(banner)
         except Exception as e:

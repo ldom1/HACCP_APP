@@ -56,8 +56,7 @@ class ManageFournisseurs:
     def load_settings(self):
         self.settings_data["settings_fournisseurs_banner"].clear_widgets()
         try:
-            response_list = self.data_firebase
-            for response in response_list:
+            for response in self.data_firebase:
                 banner = FournisseurBannerSettings(nom=response['nom'], id=response['id'])
                 self.settings_data["settings_fournisseurs_banner"].add_widget(banner)
         except Exception as e:

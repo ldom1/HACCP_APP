@@ -36,8 +36,7 @@ class ManageFriteuse:
     def load_settings(self):
         self.settings_data["settings_friteuse_screen_banner"].clear_widgets()
         try:
-            response_list = self.data_firebase
-            for response in response_list:
+            for response in self.data_firebase:
                 banner = FriteuseBannerSettings(nom=response['nom'],
                                                 id=response['id'])
                 self.settings_data["settings_friteuse_screen_banner"].add_widget(banner)

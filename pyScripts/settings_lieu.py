@@ -58,8 +58,7 @@ class ManageLieu:
     def load_settings(self):
         self.settings_plan_net_lieu_data["settings_lieu_screen_banner"].clear_widgets()
         try:
-            response_list = self.data_firebase
-            for response in response_list:
+            for response in self.data_firebase:
                 banner = LieuBannerSettings(nom=response['nom'], id=response['id'])
                 self.settings_plan_net_lieu_data["settings_lieu_screen_banner"].add_widget(banner)
         except Exception as e:

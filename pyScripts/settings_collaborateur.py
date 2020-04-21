@@ -66,8 +66,7 @@ class ManageCollaborateurs:
     def load_settings(self):
         self.settings_data["settings_collaborateurs_screen_banner"].clear_widgets()
         try:
-            response_list = self.data_firebase()
-            for response in response_list:
+            for response in self.data_firebase:
                 banner = CollaborateursBannerSettings(prenom=response['prenom'],
                                                       nom=response['nom'],
                                                       id=response['id'])
