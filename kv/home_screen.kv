@@ -74,7 +74,7 @@
                     pos_hint: {"top": 1, "left": 1}
                     size_hint: 0.3, 0.5
                     on_release:
-                        print("réception produit")
+                        app.change_screen("operations_reception_produit_screen", "left")
                 Label:
                     pos_hint: {"top": 0.1, "left": 1}
                     color: utils.get_color_from_hex("#000000")
@@ -102,7 +102,7 @@
                     pos_hint: {"top": 1, "left": 1}
                     size_hint: 0.3, 0.5
                     on_release:
-                        print("friteuse")
+                        app.change_screen("operations_friteuse_screen", "left")
                 Label:
                     pos_hint: {"top": 0.1, "left": 1}
                     color: utils.get_color_from_hex("#000000")

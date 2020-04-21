@@ -2,10 +2,12 @@ from kivy.app import App
 from kivy.uix.label import Label
 from kivy.lang import Builder
 from kivy.uix.screenmanager import Screen
-from kivy.uix.button import ButtonBehavior
+from kivy.uix.button import ButtonBehavior, Button
 from kivy.uix.image import Image
 
+from HaccpApp.haccpApp.src.pyScripts.operations_friteuse import ManageFriteuseScreen
 from HaccpApp.haccpApp.src.pyScripts.operations_plan_nettoyage import ManagePlanNettoyageScreen
+from HaccpApp.haccpApp.src.pyScripts.operations_reception_produit import ManageReceptionProduitScreen
 from HaccpApp.haccpApp.src.pyScripts.settings_categorie import ManageCategories
 from HaccpApp.haccpApp.src.pyScripts.settings_collaborateur import ManageCollaborateurs
 from HaccpApp.haccpApp.src.pyScripts.settings_element_refrigerant import ManageElementRefrigerant
@@ -26,6 +28,18 @@ class TemperatureFrigoScreen(Screen):
 
 
 class PlanNettoyageScreen(Screen):
+    pass
+
+
+class ReceptionProduitScreen(Screen):
+    pass
+
+
+class FriteuseScreen(Screen):
+    pass
+
+
+class EtiquetteScreen(Screen):
     pass
 
 
@@ -61,7 +75,7 @@ class ImageButton(ButtonBehavior, Image):
     pass
 
 
-class LabelButton(ButtonBehavior, Label):
+class LabelButton(Button, Label):
     pass
 
 
@@ -85,13 +99,13 @@ class MainApp(App):
         ManagePlanNettoyage().load_operations()
         ManagePlanNettoyage().load_settings()
 
-        # ManageFournisseurs().load_()
+        ManageFournisseurs().load_operations()
         ManageFournisseurs().load_settings()
 
-        # ManageCategories().load_()
+        ManageCategories().load_operations()
         ManageCategories().load_settings()
 
-        # ManageFriteuse().load_()
+        ManageFriteuse().load_operations()
         ManageFriteuse().load_settings()
 
         # ManageEtiquette().load_()
@@ -103,6 +117,10 @@ class MainApp(App):
             ManageTemperatureFridgeScreen().clear_screen()
         elif screen_name == "operations_plan_nettoyage_screen":
             ManagePlanNettoyageScreen().clear_screen()
+        elif screen_name == "operations_reception_produit_screen":
+            ManageReceptionProduitScreen().clear_screen()
+        elif screen_name == "operations_friteuse_screen":
+            ManageFriteuseScreen().clear_screen()
         # Get the screen manager from kv file
         screen_manager = self.root.ids['screen_manager']
         screen_manager.transition.direction = direction

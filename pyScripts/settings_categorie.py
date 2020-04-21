@@ -63,7 +63,25 @@ class ManageCategories:
             print('Settings categories banner:', e)
 
     def load_operations(self):
-        print('to do')
+        widget_dict = [
+            self.app.root.ids["operations_reception_produit_screen"].ids["reception_produit_selection_categorie_grid"]]
+        for widget in widget_dict:
+            self.load_operations_one_banner(widget=widget)
+
+    def load_operations_one_banner(self, widget):
+        widget.clear_widgets()
+        try:
+            response_list = self.query_firebase_get_data()
+        except Exception as e:
+            print(e)
+            return
+        for response in response_list:
+            try:
+                banner = CategorieBanner(nom=response['nom'],
+                                         banner=widget)
+                widget.add_widget(banner)
+            except Exception as e:
+                print('Categorie banner:', e, 'in', widget)
 
     def query_firebase_get_data(self):
         url = self.base_url + ".json"
@@ -100,6 +118,7 @@ class CategorieBanner(GridLayout):
         self.app = App.get_running_app()
 
         self.nom = kwargs.pop('nom')
+        self.banner = kwargs.pop('banner')
 
         with self.canvas.before:
             Color(rgba=(utils.get_color_from_hex("#0062D1")))
@@ -110,7 +129,7 @@ class CategorieBanner(GridLayout):
         left_fl = FloatLayout()
         left_fl_title = LabelButton(text=self.nom, size_hint=(1, 1), pos_hint={"top": 1, "right": 1},
                                     color=utils.get_color_from_hex("#ffffff"),
-                                    on_release=partial(self.select_element, self.app))
+                                    on_release=partial(self.select_element, self.banner))
 
         left_fl.add_widget(left_fl_title)
 
@@ -121,11 +140,11 @@ class CategorieBanner(GridLayout):
         self.rect.size = self.size
 
     def select_element(self, *args):
-        running_app = args[0]
+        banner = args[0]
         widget = args[1]
-        clean_widget(widget)
+        clean_widget(banner)
         widget.color = utils.get_color_from_hex("#35477d")
-        running_app.categorie_choice = widget.text
+        self.app.categorie_choice = widget.text
 
 
 class CategorieBannerSettings(GridLayout):

@@ -77,7 +77,10 @@ class ManageCollaborateurs:
     def load_operations(self):
         widget_dict = [
             self.app.root.ids["operations_temperature_frigo_screen"].ids["temp_frigo_selection_collaborateur_grid"],
-            self.app.root.ids["operations_plan_nettoyage_screen"].ids["plan_nettoyage_selection_collaborateur_grid"]]
+            self.app.root.ids["operations_plan_nettoyage_screen"].ids["plan_nettoyage_selection_collaborateur_grid"],
+            self.app.root.ids["operations_reception_produit_screen"].ids[
+                "reception_produit_selection_collaborateur_grid"],
+            self.app.root.ids["operations_friteuse_screen"].ids["friteuse_selection_collaborateur_grid"]]
         for widget in widget_dict:
             self.load_operations_one_banner(widget=widget)
 

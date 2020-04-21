@@ -7,7 +7,9 @@
 #:include kv/settings_fournisseurs_screen.kv
 #:include kv/settings_friteuse_screen.kv
 #:include kv/settings_etiquettes_screen.kv
-#:include kv/operations_plan_nettoyage.kv
+#:include kv/operations_plan_nettoyage_screen.kv
+#:include kv/operations_reception_produit_screen.kv
+#:include kv/operations_friteuse_screen.kv
 #:import utils kivy.utils
 
 GridLayout:
@@ -70,6 +72,15 @@ GridLayout:
             PlanNettoyageScreen:
                 name: "operations_plan_nettoyage_screen"
                 id: operations_plan_nettoyage_screen
+            ReceptionProduitScreen:
+                name: "operations_reception_produit_screen"
+                id: operations_reception_produit_screen
+            FriteuseScreen:
+                name: "operations_friteuse_screen"
+                id: operations_friteuse_screen
+            EtiquetteScreen:
+                name: "operations_etiquette_screen"
+                id: operations_etiquette_screen
             SettingsScreen:
                 name: "settings_screen"
                 id: settings_screen
