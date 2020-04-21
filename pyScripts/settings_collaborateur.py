@@ -31,6 +31,7 @@ class ManageCollaborateurs:
         self.settings = self.app.root.ids["settings_collaborateurs_screen"]
         self.settings_data = self.settings.ids
         self.base_url = "https://haccpapp-40c63.firebaseio.com/test_user/settings/collaborateur"
+        self.data_firebase = self.query_firebase_get_data()
 
     def get_data_settings(self):
         nom = self.settings_data['settings_collaborateurs_nom'].text
@@ -65,7 +66,7 @@ class ManageCollaborateurs:
     def load_settings(self):
         self.settings_data["settings_collaborateurs_screen_banner"].clear_widgets()
         try:
-            response_list = self.query_firebase_get_data()
+            response_list = self.data_firebase()
             for response in response_list:
                 banner = CollaborateursBannerSettings(prenom=response['prenom'],
                                                       nom=response['nom'],
@@ -87,7 +88,7 @@ class ManageCollaborateurs:
     def load_operations_one_banner(self, widget):
         widget.clear_widgets()
         try:
-            response_list = self.query_firebase_get_data()
+            response_list = self.data_firebase
         except Exception as e:
             print(e)
             return

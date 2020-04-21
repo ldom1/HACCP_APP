@@ -31,6 +31,7 @@ class ManageFournisseurs:
         self.settings = self.app.root.ids["settings_fournisseurs_screen"]
         self.settings_data = self.settings.ids
         self.base_url = "https://haccpapp-40c63.firebaseio.com/test_user/settings/fournisseur"
+        self.data_firebase = self.query_firebase_get_data()
 
     def get_data_settings(self):
         nom = self.settings_data['settings_fournisseurs_nom'].text
@@ -55,7 +56,7 @@ class ManageFournisseurs:
     def load_settings(self):
         self.settings_data["settings_fournisseurs_banner"].clear_widgets()
         try:
-            response_list = self.query_firebase_get_data()
+            response_list = self.data_firebase
             for response in response_list:
                 banner = FournisseurBannerSettings(nom=response['nom'], id=response['id'])
                 self.settings_data["settings_fournisseurs_banner"].add_widget(banner)
@@ -72,7 +73,7 @@ class ManageFournisseurs:
     def load_operations_one_banner(self, widget):
         widget.clear_widgets()
         try:
-            response_list = self.query_firebase_get_data()
+            response_list = self.data_firebase
         except Exception as e:
             print(e)
             return

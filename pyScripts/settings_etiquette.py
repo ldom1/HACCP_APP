@@ -31,11 +31,12 @@ class ManageEtiquette:
         self.settings_banner = self.app.root.ids['settings_etiquettes_screen']
         self.settings_data = self.settings_banner.ids
         self.base_url = "https://haccpapp-40c63.firebaseio.com/test_user/settings/etiquette"
+        self.data_firebase = self.query_firebase_get_data()
 
     def load_settings(self):
         self.settings_data["settings_etiquette_screen_banner"].clear_widgets()
         try:
-            response_list = self.query_firebase_get_data()
+            response_list = self.data_firebase
             for response in response_list:
                 banner = EtiquetteBannerSettings(nom=response['nom'], id=response['id'])
                 self.settings_data["settings_etiquette_screen_banner"].add_widget(banner)
@@ -46,7 +47,7 @@ class ManageEtiquette:
         self.app.root.ids["temperature_frigo_screen"].ids["temp_frigo_selection_element_grid"].clear_widgets()
         # Temp Frigo
         try:
-            element_list = self.query_firebase_get_data()
+            element_list = self.data_firebase
         except Exception as e:
             print(e)
             return

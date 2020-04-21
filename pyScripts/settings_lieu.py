@@ -31,6 +31,7 @@ class ManageLieu:
         self.settings_plan_net_lieu = self.app.root.ids["settings_plan_nettoyage_screen"]
         self.settings_plan_net_lieu_data = self.settings_plan_net_lieu.ids
         self.base_url = "https://haccpapp-40c63.firebaseio.com/test_user/settings/plan_nettoyage_lieu"
+        self.data_firebase = self.query_firebase_get_data()
 
     def get_data_settings(self):
         nom = self.settings_plan_net_lieu_data['settings_lieu_nom'].text
@@ -57,7 +58,7 @@ class ManageLieu:
     def load_settings(self):
         self.settings_plan_net_lieu_data["settings_lieu_screen_banner"].clear_widgets()
         try:
-            response_list = self.query_firebase_get_data()
+            response_list = self.data_firebase
             for response in response_list:
                 banner = LieuBannerSettings(nom=response['nom'], id=response['id'])
                 self.settings_plan_net_lieu_data["settings_lieu_screen_banner"].add_widget(banner)
@@ -73,7 +74,7 @@ class ManageLieu:
     def load_operations_one_banner(self, widget):
         widget.clear_widgets()
         try:
-            response_list = self.query_firebase_get_data()
+            response_list = self.data_firebase
         except Exception as e:
             print(e)
             return

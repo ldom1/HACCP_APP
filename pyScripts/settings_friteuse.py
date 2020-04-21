@@ -31,11 +31,12 @@ class ManageFriteuse:
         self.settings_banner = self.app.root.ids['settings_friteuse_screen']
         self.settings_data = self.settings_banner.ids
         self.base_url = "https://haccpapp-40c63.firebaseio.com/test_user/settings/friteuse"
+        self.data_firebase = self.query_firebase_get_data()
 
     def load_settings(self):
         self.settings_data["settings_friteuse_screen_banner"].clear_widgets()
         try:
-            response_list = self.query_firebase_get_data()
+            response_list = self.data_firebase
             for response in response_list:
                 banner = FriteuseBannerSettings(nom=response['nom'],
                                                 id=response['id'])
@@ -52,7 +53,7 @@ class ManageFriteuse:
     def load_operations_one_banner(self, widget):
         widget.clear_widgets()
         try:
-            response_list = self.query_firebase_get_data()
+            response_list = self.data_firebase
         except Exception as e:
             print(e)
             return
