@@ -26,12 +26,17 @@ class ImageButton(ButtonBehavior, Image):
 
 class ManageCollaborateurs:
 
-    def __init__(self):
+    def __init__(self, data=None):
         self.app = App.get_running_app()
         self.settings = self.app.root.ids["settings_collaborateurs_screen"]
         self.settings_data = self.settings.ids
         self.base_url = "https://haccpapp-40c63.firebaseio.com/test_user/settings/collaborateur"
-        self.data_firebase = self.query_firebase_get_data()
+
+        if data:
+            self.data = data
+            self.data_firebase = self.format_query_firebase()
+        else:
+            self.data_firebase = self.query_firebase_get_data()
 
     def get_data_settings(self):
         nom = self.settings_data['settings_collaborateurs_nom'].text
@@ -80,7 +85,9 @@ class ManageCollaborateurs:
             self.app.root.ids["operations_plan_nettoyage_screen"].ids["plan_nettoyage_selection_collaborateur_grid"],
             self.app.root.ids["operations_reception_produit_screen"].ids[
                 "reception_produit_selection_collaborateur_grid"],
-            self.app.root.ids["operations_friteuse_screen"].ids["friteuse_selection_collaborateur_grid"]]
+            self.app.root.ids["operations_friteuse_screen"].ids["friteuse_selection_collaborateur_grid"],
+            self.app.root.ids["operations_etiquette_screen"].ids["etiquette_selection_collaborateur_grid"],
+            self.app.root.ids["operations_tracabilite_screen"].ids["tracabilite_selection_collaborateur_grid"]]
         for widget in widget_dict:
             self.load_operations_one_banner(widget=widget)
 
@@ -100,17 +107,18 @@ class ManageCollaborateurs:
             except Exception as e:
                 print('Collaborateurs banner:', e, 'in', widget)
 
+
     def query_firebase_get_data(self):
         url = self.base_url + ".json"
         response = requests.get(url=url)
-        collaborateur_json = json.loads(response.content.decode())
+        response_json = json.loads(response.content.decode())
 
-        collaborateur_list = []
+        response_list = []
 
-        for k, v in collaborateur_json.items():
-            collaborateur_list.append({'nom': v['nom'], 'prenom': v['prenom'], 'id': k})
+        for k, v in response_json.items():
+            response_list.append({'nom': v['nom'], 'prenom': v['prenom'], 'id': k})
 
-        return collaborateur_list
+        return response_list
 
     def query_firebase_delete_data(self, id):
         url = self.base_url + "/{0}.json".format(id)
@@ -125,6 +133,14 @@ class ManageCollaborateurs:
         url = self.base_url + ".json"
 
         requests.post(url, data=json.dumps(data))
+
+    def format_query_firebase(self):
+        response_list = []
+
+        for k, v in self.data['collaborateur'].items():
+            response_list.append({'nom': v['nom'], 'prenom': v['prenom'], 'id': k})
+
+        return response_list
 
 
 class CollaborateursBanner(GridLayout):

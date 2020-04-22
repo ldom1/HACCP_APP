@@ -88,7 +88,7 @@
                     pos_hint: {"top": 1, "left": 1}
                     size_hint: 0.3, 0.5
                     on_release:
-                        print("traçabilité")
+                        app.change_screen("operations_tracabilite_screen", "left")
                 Label:
                     pos_hint: {"top": 0.1, "left": 1}
                     color: utils.get_color_from_hex("#000000")
@@ -116,7 +116,7 @@
                     pos_hint: {"top": 1, "left": 1}
                     size_hint: 0.3, 0.5
                     on_release:
-                        print("etiquettes")
+                        app.change_screen("operations_etiquette_screen", "left")
                 Label:
                     pos_hint: {"top": 0.1, "left": 1}
                     color: utils.get_color_from_hex("#000000")

@@ -26,12 +26,16 @@ class ImageButton(ButtonBehavior, Image):
 
 class ManageElementRefrigerant:
 
-    def __init__(self):
+    def __init__(self, data=None):
         self.app = App.get_running_app()
         self.settings_banner = self.app.root.ids['settings_elements_refrigerants_screen']
         self.settings_data = self.settings_banner.ids
         self.base_url = "https://haccpapp-40c63.firebaseio.com/test_user/settings/element_refrigerant"
-        self.data_firebase = self.query_firebase_get_data()
+        if data:
+            self.data = data
+            self.data_firebase = self.format_query_firebase()
+        else:
+            self.data_firebase = self.query_firebase_get_data()
 
     def load_settings(self):
         self.settings_data["settings_elements_refrigerants_screen_banner"].clear_widgets()
@@ -61,7 +65,7 @@ class ManageElementRefrigerant:
                                                           banner=widget)
                 widget.add_widget(element_banner)
             except Exception as e:
-                print('Element Temp Frigo banner:', e, 'in', widget)
+                print('Element refrigerant banner:', e, 'in', widget)
 
     def get_data_settings(self):
         nom_element = self.settings_data['settings_element_refrigerant_nom'].text
@@ -108,6 +112,14 @@ class ManageElementRefrigerant:
         url = self.base_url + "/{0}.json".format(id)
         response = requests.delete(url=url)
         return json.dumps(response.content.decode())
+
+    def format_query_firebase(self):
+        response_list = []
+
+        for k, v in self.data['element_refrigerant'].items():
+            response_list.append({'nom': v['nom'], 'id': k})
+
+        return response_list
 
 
 class ElementRefrigerantBanner(GridLayout):

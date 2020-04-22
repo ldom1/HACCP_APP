@@ -26,12 +26,16 @@ class ImageButton(ButtonBehavior, Image):
 
 class ManageFriteuse:
 
-    def __init__(self):
+    def __init__(self, data=None):
         self.app = App.get_running_app()
         self.settings_banner = self.app.root.ids['settings_friteuse_screen']
         self.settings_data = self.settings_banner.ids
         self.base_url = "https://haccpapp-40c63.firebaseio.com/test_user/settings/friteuse"
-        self.data_firebase = self.query_firebase_get_data()
+        if data:
+            self.data = data
+            self.data_firebase = self.format_query_firebase()
+        else:
+            self.data_firebase = self.query_firebase_get_data()
 
     def load_settings(self):
         self.settings_data["settings_friteuse_screen_banner"].clear_widgets()
@@ -109,6 +113,14 @@ class ManageFriteuse:
         url = self.base_url + "/{0}.json".format(id)
         response = requests.delete(url=url)
         return json.dumps(response.content.decode())
+
+    def format_query_firebase(self):
+        response_list = []
+
+        for k, v in self.data['friteuse'].items():
+            response_list.append({'nom': v['nom'], 'id': k})
+
+        return response_list
 
 
 class FriteuseBanner(GridLayout):

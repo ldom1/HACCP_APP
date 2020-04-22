@@ -26,12 +26,16 @@ class ImageButton(ButtonBehavior, Image):
 
 class ManageEtiquette:
 
-    def __init__(self):
+    def __init__(self, data=None):
         self.app = App.get_running_app()
         self.settings_banner = self.app.root.ids['settings_etiquettes_screen']
         self.settings_data = self.settings_banner.ids
         self.base_url = "https://haccpapp-40c63.firebaseio.com/test_user/settings/etiquette"
-        self.data_firebase = self.query_firebase_get_data()
+        if data:
+            self.data = data
+            self.data_firebase = self.format_query_firebase()
+        else:
+            self.data_firebase = self.query_firebase_get_data()
 
     def load_settings(self):
         self.settings_data["settings_etiquette_screen_banner"].clear_widgets()
@@ -43,20 +47,25 @@ class ManageEtiquette:
             print('Settings etiquette banner:', e)
 
     def load_operations(self):
-        self.app.root.ids["temperature_frigo_screen"].ids["temp_frigo_selection_element_grid"].clear_widgets()
-        # Temp Frigo
+        widget_dict = [
+            self.app.root.ids["operations_etiquette_screen"].ids["etiquette_selection_produit_grid"]]
+        for widget in widget_dict:
+            self.load_operations_one_banner(widget=widget)
+
+    def load_operations_one_banner(self, widget):
+        widget.clear_widgets()
         try:
-            element_list = self.data_firebase
+            response_list = self.data_firebase
         except Exception as e:
             print(e)
             return
-        for element in element_list:
+        for response in response_list:
             try:
-                settings_collaborateur_banner = EtiquetteBanner(nom=element['nom'])
-                self.app.root.ids["temperature_frigo_screen"].ids["temp_frigo_selection_element_grid"].add_widget(
-                    settings_collaborateur_banner)
+                element_banner = EtiquetteBanner(nom=response['nom'],
+                                                 banner=widget)
+                widget.add_widget(element_banner)
             except Exception as e:
-                print('Etiquette banner:', e)
+                print('Etiquette banner:', e, 'in', widget)
 
     def get_data_settings(self):
         nom_element = self.settings_data['settings_etiquette_nom'].text
@@ -104,6 +113,14 @@ class ManageEtiquette:
         response = requests.delete(url=url)
         return json.dumps(response.content.decode())
 
+    def format_query_firebase(self):
+        response_list = []
+
+        for k, v in self.data['etiquette'].items():
+            response_list.append({'nom': v['nom'], 'id': k})
+
+        return response_list
+
 
 class EtiquetteBanner(GridLayout):
     rows = 1
@@ -114,6 +131,7 @@ class EtiquetteBanner(GridLayout):
         self.app = App.get_running_app()
 
         self.nom = kwargs.pop('nom')
+        self.banner = kwargs.pop('banner')
 
         with self.canvas.before:
             Color(rgba=(utils.get_color_from_hex("#0062D1")))
@@ -124,7 +142,7 @@ class EtiquetteBanner(GridLayout):
         left_fl = FloatLayout()
         left_fl_title = LabelButton(text=self.nom, size_hint=(1, 1), pos_hint={"top": 1, "right": 1},
                                     color=utils.get_color_from_hex("#ffffff"),
-                                    on_release=partial(self.select_element, self.app))
+                                    on_release=partial(self.select_element, self.banner))
 
         left_fl.add_widget(left_fl_title)
 
@@ -135,11 +153,11 @@ class EtiquetteBanner(GridLayout):
         self.rect.size = self.size
 
     def select_element(self, *args):
-        clean_widget(app=self.app, screen_id="temperature_frigo_screen", widget_id="temp_frigo_selection_element_grid")
-        running_app = args[0]
+        banner = args[0]
+        clean_widget(banner)
         widget = args[1]
         widget.color = utils.get_color_from_hex("#35477d")
-        running_app.element_choice = widget.text
+        self.app.etiquette_choice = widget.text
 
 
 class EtiquetteBannerSettings(GridLayout):

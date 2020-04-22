@@ -26,12 +26,16 @@ class ImageButton(ButtonBehavior, Image):
 
 class ManageFournisseurs:
 
-    def __init__(self):
+    def __init__(self, data=None):
         self.app = App.get_running_app()
         self.settings = self.app.root.ids["settings_fournisseurs_screen"]
         self.settings_data = self.settings.ids
         self.base_url = "https://haccpapp-40c63.firebaseio.com/test_user/settings/fournisseur"
-        self.data_firebase = self.query_firebase_get_data()
+        if data:
+            self.data = data
+            self.data_firebase = self.format_query_firebase()
+        else:
+            self.data_firebase = self.query_firebase_get_data()
 
     def get_data_settings(self):
         nom = self.settings_data['settings_fournisseurs_nom'].text
@@ -108,6 +112,14 @@ class ManageFournisseurs:
         url = self.base_url + ".json"
 
         requests.post(url, data=json.dumps(data))
+
+    def format_query_firebase(self):
+        response_list = []
+
+        for k, v in self.data['fournisseur'].items():
+            response_list.append({'nom': v['nom'], 'id': k})
+
+        return response_list
 
 
 class FournisseurBanner(GridLayout):
