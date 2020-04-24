@@ -26,36 +26,38 @@ class ImageButton(ButtonBehavior, Image):
 
 class ManageEtiquette:
 
-    def __init__(self, data=None):
+    def __init__(self):
         self.app = App.get_running_app()
         self.settings_banner = self.app.root.ids['settings_etiquettes_screen']
         self.settings_data = self.settings_banner.ids
         self.base_url = "https://haccpapp-40c63.firebaseio.com/test_user/settings/etiquette"
-        if data:
-            self.data = data
-            self.data_firebase = self.format_query_firebase()
-        else:
-            self.data_firebase = self.query_firebase_get_data()
 
-    def load_settings(self):
+    def load_settings(self, data=None):
         self.settings_data["settings_etiquette_screen_banner"].clear_widgets()
+        if data:
+            data_firebase = self.format_query_firebase(data=data)
+        else:
+            data_firebase = self.query_firebase_get_data()
         try:
-            for response in self.data_firebase:
+            for response in data_firebase:
                 banner = EtiquetteBannerSettings(nom=response['nom'], id=response['id'])
                 self.settings_data["settings_etiquette_screen_banner"].add_widget(banner)
         except Exception as e:
             print('Settings etiquette banner:', e)
 
-    def load_operations(self):
+    def load_operations(self, data=None):
         widget_dict = [
             self.app.root.ids["operations_etiquette_screen"].ids["etiquette_selection_produit_grid"]]
         for widget in widget_dict:
-            self.load_operations_one_banner(widget=widget)
+            self.load_operations_one_banner(data=data, widget=widget)
 
-    def load_operations_one_banner(self, widget):
+    def load_operations_one_banner(self, data, widget):
         widget.clear_widgets()
         try:
-            response_list = self.data_firebase
+            if data:
+                response_list = self.format_query_firebase(data=data)
+            else:
+                response_list = self.query_firebase_get_data()
         except Exception as e:
             print(e)
             return
@@ -113,10 +115,10 @@ class ManageEtiquette:
         response = requests.delete(url=url)
         return json.dumps(response.content.decode())
 
-    def format_query_firebase(self):
+    def format_query_firebase(self, data):
         response_list = []
 
-        for k, v in self.data['etiquette'].items():
+        for k, v in data['etiquette'].items():
             response_list.append({'nom': v['nom'], 'id': k})
 
         return response_list

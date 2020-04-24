@@ -29,16 +29,11 @@
                 pos_hint: {"top": .8, "left": 1}
                 size_hint: 1, .7
                 GridLayout:
-                    # Banner grid
-                    id: etiquette_selection_produit_grid
                     cols: 1
-                    padding: 10, 10
-                    spacing: 20,20
-                    size_hint_y: None
-                    height: self.minimum_height
-                    width: self.minimum_width
-                    row_default_height: '85dp'
-                    row_force_default: True
+                    ImageButton:
+                        source: "icons/camera.png"
+                        on_release:
+                            app.change_screen("camera_screen", direction="left")
         GridLayout:
             cols: 1
             GridLayout:
@@ -101,11 +96,7 @@
             text: "[u]Valider[/u]"
             markup: True
             on_release:
-                ManageEtiquetteScreen().get_data()
-                btn_dlc_j_1.text = "J +1"
-                btn_dlc_j_2.text = "J +2"
-                btn_dlc_j_3.text = "J +3"
-                btn_dlc_j_4.text = "J +4"
+                ManageTracabiliteScreen().get_data()
 
     GridLayout:
         cols: 1

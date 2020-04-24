@@ -1,4 +1,5 @@
 import json
+import time
 
 import requests
 from kivy.app import App
@@ -7,6 +8,7 @@ from kivy.lang import Builder
 from kivy.uix.screenmanager import Screen
 from kivy.uix.button import ButtonBehavior, Button
 from kivy.uix.image import Image
+from kivy.uix.boxlayout import BoxLayout
 
 from HaccpApp.haccpApp.src.pyScripts.operations_etiquette import ManageEtiquetteScreen
 from HaccpApp.haccpApp.src.pyScripts.operations_friteuse import ManageFriteuseScreen
@@ -79,11 +81,23 @@ class SettingsEtiquettesScreen(Screen):
     pass
 
 
+class CameraScreen(Screen):
+    def capture(self):
+        camera = self.ids['camera']
+        timestr = time.strftime("%H%M%S%d%m%Y")
+        camera.export_to_png("img/img_etiquette_{}.png".format(timestr))
+        print("Captured")
+
+
 class ImageButton(ButtonBehavior, Image):
     pass
 
 
 class LabelButton(Button, Label):
+    pass
+
+
+class CameraClick(BoxLayout):
     pass
 
 
@@ -104,40 +118,38 @@ class MainApp(App):
     def on_start(self):
         data_settings = self.load_data()
 
-        print(data_settings.keys())
-        print(data_settings)
+        collaborateur = ManageCollaborateurs()
+        collaborateur.load_operations(data=data_settings)
+        collaborateur.load_settings(data=data_settings)
 
-        collaborateur = ManageCollaborateurs(data=data_settings)
-        collaborateur.load_operations()
-        collaborateur.load_settings()
+        element_refrigerant = ManageElementRefrigerant()
+        element_refrigerant.load_operations(data=data_settings)
+        element_refrigerant.load_settings(data=data_settings)
 
-        element_refrigerant = ManageElementRefrigerant(data=data_settings)
-        element_refrigerant.load_operations()
-        element_refrigerant.load_settings()
+        lieu = ManageLieu()
+        lieu.load_operations(data=data_settings)
+        lieu.load_settings(data=data_settings)
 
-        lieu = ManageLieu(data=data_settings)
-        lieu.load_operations()
-        lieu.load_settings()
+        plan_nettoyage = ManagePlanNettoyage()
+        plan_nettoyage.load_operations(data=data_settings)
+        plan_nettoyage.load_settings(data=data_settings)
 
-        plan_nettoyage = ManagePlanNettoyage(data=data_settings)
-        plan_nettoyage.load_operations()
-        plan_nettoyage.load_settings()
+        fournisseur = ManageFournisseurs()
+        fournisseur.load_operations(data=data_settings)
+        fournisseur.load_settings(data=data_settings)
 
-        fournisseur = ManageFournisseurs(data=data_settings)
-        fournisseur.load_operations()
-        fournisseur.load_settings()
+        start_time = time.time()
+        categorie = ManageCategories()
+        categorie.load_operations(data=data_settings)
+        categorie.load_settings(data=data_settings)
 
-        categorie = ManageCategories(data=data_settings)
-        categorie.load_operations()
-        categorie.load_settings()
+        friteuse = ManageFriteuse()
+        friteuse.load_operations(data=data_settings)
+        friteuse.load_settings(data=data_settings)
 
-        friteuse = ManageFriteuse(data=data_settings)
-        friteuse.load_operations()
-        friteuse.load_settings()
-
-        etiquette = ManageEtiquette(data=data_settings)
-        etiquette.load_operations()
-        etiquette.load_settings()
+        etiquette = ManageEtiquette()
+        etiquette.load_operations(data=data_settings)
+        etiquette.load_settings(data=data_settings)
 
     def change_screen(self, screen_name, direction):
         # Clean selected screen

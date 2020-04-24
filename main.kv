@@ -12,6 +12,8 @@
 #:include kv/operations_friteuse_screen.kv
 #:include kv/operations_etiquette_screen.kv
 #:include kv/operations_tracabilite_screen.kv
+#:include kv/operations_tracabilite_screen.kv
+#:include kv/camera_screen.kv
 #:import utils kivy.utils
 
 GridLayout:
@@ -107,3 +109,6 @@ GridLayout:
             SettingsEtiquettesScreen:
                 name: "settings_etiquettes_screen"
                 id: settings_etiquettes_screen
+            CameraScreen:
+                name: "camera_screen"
+                id: camera_screen

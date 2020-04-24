@@ -31,11 +31,6 @@ class ManageLieu:
         self.settings_plan_net_lieu = self.app.root.ids["settings_plan_nettoyage_screen"]
         self.settings_plan_net_lieu_data = self.settings_plan_net_lieu.ids
         self.base_url = "https://haccpapp-40c63.firebaseio.com/test_user/settings/plan_nettoyage_lieu"
-        if data:
-            self.data = data
-            self.data_firebase = self.format_query_firebase()
-        else:
-            self.data_firebase = self.query_firebase_get_data()
 
     def get_data_settings(self):
         nom = self.settings_plan_net_lieu_data['settings_lieu_nom'].text
@@ -59,25 +54,32 @@ class ManageLieu:
         self.load_settings()
         self.load_operations()
 
-    def load_settings(self):
+    def load_settings(self, data=None):
         self.settings_plan_net_lieu_data["settings_lieu_screen_banner"].clear_widgets()
+        if data:
+            data_firebase = self.format_query_firebase(data)
+        else:
+            data_firebase = self.query_firebase_get_data()
         try:
-            for response in self.data_firebase:
+            for response in data_firebase:
                 banner = LieuBannerSettings(nom=response['nom'], id=response['id'])
                 self.settings_plan_net_lieu_data["settings_lieu_screen_banner"].add_widget(banner)
         except Exception as e:
             print('Settings Lieu banner:', e)
 
-    def load_operations(self):
+    def load_operations(self, data=None):
         widget_dict = [
             self.app.root.ids["operations_plan_nettoyage_screen"].ids["plan_nettoyage_selection_lieu_grid"]]
         for widget in widget_dict:
-            self.load_operations_one_banner(widget=widget)
+            self.load_operations_one_banner(data=data, widget=widget)
 
-    def load_operations_one_banner(self, widget):
+    def load_operations_one_banner(self, data, widget):
         widget.clear_widgets()
         try:
-            response_list = self.data_firebase
+            if data:
+                response_list = self.format_query_firebase(data)
+            else:
+                response_list = self.query_firebase_get_data()
         except Exception as e:
             print(e)
             return
@@ -113,10 +115,10 @@ class ManageLieu:
 
         requests.post(url, data=json.dumps(data))
 
-    def format_query_firebase(self):
+    def format_query_firebase(self, data):
         response_list = []
 
-        for k, v in self.data['plan_nettoyage_lieu'].items():
+        for k, v in data['plan_nettoyage_lieu'].items():
             response_list.append({'nom': v['nom'], 'id': k})
 
         return response_list
