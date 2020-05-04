@@ -1,5 +1,4 @@
 #:import utils kivy.utils
-#:import ManageElementRefrigerant pyScripts.settings_element_refrigerant.ManageElementRefrigerant
 
 <SettingsElementsRefrigerantsScreen>:
     FloatLayout:
@@ -207,4 +206,4 @@
                             text: "[u]Valider[/u]"
                             markup: True
                             on_release:
-                                ManageElementRefrigerant().get_data_settings()
+                                app.settings.get_data_settings('element_refrigerant')

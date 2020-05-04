@@ -1,5 +1,4 @@
 #:import utils kivy.utils
-#:import ManageEtiquette pyScripts.settings_etiquette.ManageEtiquette
 
 <SettingsEtiquettesScreen>:
     FloatLayout:
@@ -209,4 +208,4 @@
                             text: "[u]Valider[/u]"
                             markup: True
                             on_release:
-                                ManageEtiquette().get_data_settings()
+                                app.settings.get_data_settings('etiquette')

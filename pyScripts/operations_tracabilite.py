@@ -7,7 +7,7 @@ from kivy.app import App
 
 import requests
 
-from HaccpApp.haccpApp.src.pyScripts.utils import clean_widget
+from pyScripts.utils import clean_widget
 
 
 class ManageTracabiliteScreen:
@@ -16,7 +16,9 @@ class ManageTracabiliteScreen:
 
         self.app = App.get_running_app()
         self.screen_data = self.app.root.ids['operations_tracabilite_screen'].ids
-        self.base_url = "https://haccpapp-40c63.firebaseio.com/test_user/operations/tracabilite.json"
+        self.base_url = "https://haccpapp-40c63.firebaseio.com/{0}/operations/tracabilite.json?auth={1}".format(
+            self.app.local_id,
+            self.app.id_token)
 
     def get_data(self):
 

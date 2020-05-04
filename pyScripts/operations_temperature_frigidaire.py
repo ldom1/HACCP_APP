@@ -7,7 +7,7 @@ from kivy.app import App
 
 import requests
 
-from HaccpApp.haccpApp.src.pyScripts.utils import clean_widget
+from pyScripts.utils import clean_widget
 
 
 class ManageTemperatureFridgeScreen:
@@ -16,7 +16,9 @@ class ManageTemperatureFridgeScreen:
 
         self.app = App.get_running_app()
         self.screen_data = self.app.root.ids['operations_temperature_frigo_screen'].ids
-        self.base_url = "https://haccpapp-40c63.firebaseio.com/test_user/operations/temperature_frigidaire.json"
+        self.base_url = "https://haccpapp-40c63.firebaseio.com/{0}/operations/temperature_frigidaire.json?auth={1}".format(
+            self.app.local_id,
+            self.app.id_token)
 
     def modify_temperature_fridge_on_click(self, action):
         old_label_temp_fridge = self.screen_data['label_temp_fridge'].text

@@ -1,6 +1,4 @@
 #:import utils kivy.utils
-#:import ManageLieu pyScripts.settings_lieu.ManageLieu
-#:import ManagePlanNettoyage pyScripts.settings_plan_nettoyage.ManagePlanNettoyage
 
 <SettingsPlanNettoyageScreen>:
     FloatLayout:
@@ -187,7 +185,7 @@
                         text: "[u]Valider[/u]"
                         markup: True
                         on_release:
-                            ManageLieu().get_data_settings()
+                            app.settings.get_data_settings('plan_nettoyage_lieu')
 
 
             GridLayout:
@@ -261,4 +259,4 @@
                         text: "[u]Valider[/u]"
                         markup: True
                         on_release:
-                            ManagePlanNettoyage().get_data_settings()
+                            app.settings.get_data_settings('plan_nettoyage_element')

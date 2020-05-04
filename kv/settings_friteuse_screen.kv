@@ -1,5 +1,4 @@
 #:import utils kivy.utils
-#:import ManageFriteuse pyScripts.settings_friteuse.ManageFriteuse
 
 <SettingsFriteuseScreen>:
     FloatLayout:
@@ -209,4 +208,4 @@
                             text: "[u]Valider[/u]"
                             markup: True
                             on_release:
-                                ManageFriteuse().get_data_settings()
+                                app.settings.get_data_settings('friteuse')

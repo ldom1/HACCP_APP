@@ -1,4 +1,5 @@
 #:include kv/home_screen.kv
+#:include kv/login_screen.kv
 #:include kv/operations_temperature_frigo_screen.kv
 #:include kv/settings_screen.kv
 #:include kv/settings_collaborateurs_screen.kv
@@ -67,6 +68,9 @@ GridLayout:
                     size: self.size
                     pos: self.pos
             id: screen_manager
+            LoginScreen:
+                name: "login_screen"
+                id: login_screen
             HomeScreen:
                 name: "home_screen"
                 id: home_screen

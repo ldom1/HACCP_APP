@@ -1,6 +1,4 @@
 #:import utils kivy.utils
-#:import ManageFournisseurs pyScripts.settings_fournisseur.ManageFournisseurs
-#:import ManageCategories pyScripts.settings_categorie.ManageCategories
 
 <SettingsFournisseursScreen>:
     FloatLayout:
@@ -186,7 +184,7 @@
                         text: "[u]Valider[/u]"
                         markup: True
                         on_release:
-                            ManageFournisseurs().get_data_settings()
+                            app.settings.get_data_settings('fournisseur')
 
 
             GridLayout:
@@ -260,4 +258,4 @@
                         text: "[u]Valider[/u]"
                         markup: True
                         on_release:
-                            ManageCategories().get_data_settings()
+                            app.settings.get_data_settings('categorie')

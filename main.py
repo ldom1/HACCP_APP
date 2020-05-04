@@ -6,7 +6,7 @@ from kivy.app import App
 from kivy.uix.label import Label
 from kivy.lang import Builder
 from kivy.uix.screenmanager import Screen
-from kivy.uix.button import ButtonBehavior, Button
+from kivy.uix.button import ButtonBehavior
 from kivy.uix.image import Image
 from kivy.uix.boxlayout import BoxLayout
 
@@ -15,18 +15,17 @@ from pyScripts.operations_friteuse import ManageFriteuseScreen
 from pyScripts.operations_plan_nettoyage import ManagePlanNettoyageScreen
 from pyScripts.operations_reception_produit import ManageReceptionProduitScreen
 from pyScripts.operations_tracabilite import ManageTracabiliteScreen
-from pyScripts.settings_categorie import ManageCategories
-from pyScripts.settings_collaborateur import ManageCollaborateurs
-from pyScripts.settings_element_refrigerant import ManageElementRefrigerant
-from pyScripts.settings_etiquette import ManageEtiquette
-from pyScripts.settings_fournisseur import ManageFournisseurs
-from pyScripts.settings_friteuse import ManageFriteuse
-from pyScripts.settings_lieu import ManageLieu
-from pyScripts.settings_plan_nettoyage import ManagePlanNettoyage
 from pyScripts.operations_temperature_frigidaire import ManageTemperatureFridgeScreen
+
+from HaccpApp.haccpApp.src.pyScripts.login import Login
+from pyScripts.settings import ManageSettings
 
 
 class HomeScreen(Screen):
+    pass
+
+
+class LoginScreen(Screen):
     pass
 
 
@@ -104,7 +103,7 @@ class ImageButton(ButtonBehavior, Image):
     pass
 
 
-class LabelButton(Button, Label):
+class LabelButton(ButtonBehavior, Label):
     pass
 
 
@@ -117,50 +116,50 @@ GUI = Builder.load_file("main.kv")
 
 class MainApp(App):
     def build(self):
+
+        self.login = Login()
+
         return GUI
 
-    def load_data(self):
-
-        url_settings = "https://haccpapp-40c63.firebaseio.com/test_user/settings/.json"
+    def load_data(self, local_id, id_token):
+        start_time = time.time()
+        url_settings = "https://haccpapp-40c63.firebaseio.com/{0}/settings/.json?auth={1}".format(local_id,
+                                                                                                  id_token)
         response = requests.get(url=url_settings)
         data_settings = json.loads(response.content.decode())
+        print('First query executed in:', time.time() - start_time, 's')
         return data_settings
 
     def on_start(self):
-        data_settings = self.load_data()
 
-        collaborateur = ManageCollaborateurs()
-        collaborateur.load_operations(data=data_settings)
-        collaborateur.load_settings(data=data_settings)
+        try:
+            with open('refresh_token_file.txt', 'r') as f:
+                refresh_token = f.read()
+            f.close()
 
-        element_refrigerant = ManageElementRefrigerant()
-        element_refrigerant.load_operations(data=data_settings)
-        element_refrigerant.load_settings(data=data_settings)
+            # Use refresh token to get a new idToken
+            id_token, local_id = self.login.exchange_refresh_token(refresh_token)
 
-        lieu = ManageLieu()
-        lieu.load_operations(data=data_settings)
-        lieu.load_settings(data=data_settings)
+            self.id_token = id_token
+            self.local_id = local_id
 
-        plan_nettoyage = ManagePlanNettoyage()
-        plan_nettoyage.load_operations(data=data_settings)
-        plan_nettoyage.load_settings(data=data_settings)
+            print('Id token:', id_token)
+            print('Local Id token:', local_id)
 
-        fournisseur = ManageFournisseurs()
-        fournisseur.load_operations(data=data_settings)
-        fournisseur.load_settings(data=data_settings)
+            data_settings = self.load_data(local_id=local_id, id_token=id_token)
 
-        start_time = time.time()
-        categorie = ManageCategories()
-        categorie.load_operations(data=data_settings)
-        categorie.load_settings(data=data_settings)
+            start_time = time.time()
+            self.settings = ManageSettings()
+            self.settings.load_operations(data=data_settings)
+            self.settings.load_settings(data=data_settings)
 
-        friteuse = ManageFriteuse()
-        friteuse.load_operations(data=data_settings)
-        friteuse.load_settings(data=data_settings)
+            print('Settings loaded in', time.time() - start_time, 's')
 
-        etiquette = ManageEtiquette()
-        etiquette.load_operations(data=data_settings)
-        etiquette.load_settings(data=data_settings)
+            self.change_screen(screen_name="home_screen", direction="left")
+
+        except Exception as e:
+            print(e)
+
 
     def change_screen(self, screen_name, direction):
         # Clean selected screen

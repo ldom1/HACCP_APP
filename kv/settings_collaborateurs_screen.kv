@@ -1,5 +1,4 @@
 #:import utils kivy.utils
-#:import ManageCollaborateurs pyScripts.settings_collaborateur.ManageCollaborateurs
 
 <SettingsCollaborateursScreen>:
     FloatLayout:
@@ -213,4 +212,4 @@
                             text: "[u]Valider[/u]"
                             markup: True
                             on_release:
-                                ManageCollaborateurs().get_data_settings()
+                                app.settings.get_data_settings('collaborateur')
