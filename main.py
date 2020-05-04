@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 import json
 import time
 
@@ -17,7 +19,7 @@ from pyScripts.operations_reception_produit import ManageReceptionProduitScreen
 from pyScripts.operations_tracabilite import ManageTracabiliteScreen
 from pyScripts.operations_temperature_frigidaire import ManageTemperatureFridgeScreen
 
-from HaccpApp.haccpApp.src.pyScripts.login import Login
+from pyScripts.login import Login
 from pyScripts.settings import ManageSettings
 
 
@@ -115,6 +117,8 @@ GUI = Builder.load_file("main.kv")
 
 
 class MainApp(App):
+    refresh_token_file = "refresh_token.txt"
+
     def build(self):
 
         self.login = Login()
@@ -133,7 +137,7 @@ class MainApp(App):
     def on_start(self):
 
         try:
-            with open('refresh_token_file.txt', 'r') as f:
+            with open(self.refresh_token_file, 'r') as f:
                 refresh_token = f.read()
             f.close()
 
@@ -159,7 +163,6 @@ class MainApp(App):
 
         except Exception as e:
             print(e)
-
 
     def change_screen(self, screen_name, direction):
         # Clean selected screen
